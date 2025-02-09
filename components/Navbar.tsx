@@ -35,29 +35,12 @@ const Actions = styled.div`
 
 export const Navbar = () => {
 
-  const [open,setOpen] = useState(false)
   return (
     <NavbarContainer>
       <Logo>
         <RiMovie2Line size={32} />
         Movie
       </Logo>
-      {/* {!open && (
-        <h1>
-          <Link href="/"></Link>
-        </h1>
-      )}
-
-      <button
-        onClick={() => setOpen(!open)}
-      >
-        {open ? (
-          <AiOutlineMenu size={24} />
-        ) : (
-          <AiOutlineClose size={24} />
-        )}
-      </button> */}
-
       <StreamSearch />
       <Actions>
         <FaStar />
