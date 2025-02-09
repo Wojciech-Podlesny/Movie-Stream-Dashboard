@@ -1,5 +1,5 @@
 {
-  "name": "movie-stream",
+  "name": "movie-stream-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,16 +9,32 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021",
-    "next": "15.0.1"
+    "@auth/firebase-adapter": "^2.7.2",
+    "@hookform/resolvers": "^3.9.1",
+    "@reduxjs/toolkit": "^2.5.1",
+    "date-fns": "^4.1.0",
+    "firebase": "^11.0.1",
+    "firebase-admin": "^12.7.0",
+    "moment": "^2.30.1",
+    "next": "15.0.1",
+    "next-auth": "^4.24.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
+    "react-icons": "^5.4.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^6.27.0",
+    "react-toastify": "^11.0.3",
+    "styled-components": "^6.1.13",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/styled-components": "^5.1.34",
     "eslint": "^8",
-    "eslint-config-next": "15.0.1"
+    "eslint-config-next": "15.0.1",
+    "typescript": "^5"
   }
 }

@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Movie Stream Dashboard
+
+## Project overview
+
+<!-- Weather App is a web application designed to provide users with real-time weather information for any city worldwide. It offers current weather data, an hourly forecast, a map of the selected location, and a temperature graph for the next three days. Built with React, Tailwind CSS, TypeScript, and Chart.js, this application delivers a responsive and interactive user experience. -->
+
+<!-- ## Features
+
+- Comprehensive testing with Jest and React Testing Library to ensure application stability and reliability
+- Testing E2E -->
+
+## Technologies
+
+- HTML
+- CSS
+- Styled-Components
+- React
+- Typescript
+- NextJS
+- Redux
+- Firebase
+- Vitest
+- React Testing Library
+- Playwright
+- The Movie Database API
+
 
 ## Getting Started
 
-First, run the development server:
+<!-- You can either run the project locally on your machine or simply visit the live version of the app:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+https://weather-app-xs.vercel.app/ -->
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Local Installation (Optional)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If you want to run the project locally on your machine, you will need:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- A web browser
+- An internet connection
+- Node.js
+- Yarn or npm
 
-## Learn More
+To install the project locally, follow these steps:
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository: `git clone https://github.com/Wojciech-Podlesny/Movie-Stream-Dashboard.git`
+2. Navigate to the project directory: `cd movie-stream-dashboard`
+3. Install the dependencies: `yarn install` or `npm install`
+4. Start the development server: `yarn dev` or `npm run dev`
+5. Open your browser and visit `http://localhost:3000` to view the app
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<!-- ### Running tests 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To ensure the application functions as expected, comprehensive testing is employed:
 
-## Deploy on Vercel
+- Unit Tests: These tests are run with Jest and React Testing Library. They check individual components and their interactions.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Run tests `yarn test` or `npm test`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- End-to-End (E2E) Tests: These tests are run with Playwright and verify the application's overall functionality by simulating real user interactions.
+
+Run tests `yarn playwright test --ui` or `npm playwright test --ui` -->
+
+
+## Author
+
+Developed by [Wojciech Podleśny](https://github.com/Wojciech-Podlesny)
+
+## License
+
+This project is licensed under the ISC license.
