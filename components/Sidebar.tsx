@@ -55,19 +55,19 @@ const SectionTitle = styled.div`
 `;
 
 
-const navMenu = [
-  {
-    title: 'Films',
-    href: '/films',
-    icon: <ImVideoCamera size={20} />
-  },
+// const navMenu = [
+//   {
+//     title: 'Films',
+//     href: '/films',
+//     icon: <ImVideoCamera size={20} />
+//   },
 
-  {
-    title: 'Series',
-    href: '/series',
-    icon: <RiMovie2Line size={20} />
-  },
-]
+//   {
+//     title: 'Series',
+//     href: '/series',
+//     icon: <RiMovie2Line size={20} />
+//   },
+// ]
 
 
 export const Sidebar: React.FC = () => {

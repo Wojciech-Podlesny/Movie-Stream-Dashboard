@@ -39,6 +39,7 @@ export const ResetPassword = () => {
       console.error(error);
       setMessage(null);
       setError("Error");
+      console.log(data)
     }
   };
 

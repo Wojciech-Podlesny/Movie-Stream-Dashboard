@@ -5,7 +5,6 @@ import { RiMovie2Line } from "react-icons/ri";
 import {FaStar } from "react-icons/fa";
 import { styled } from "styled-components";
 import Link from "next/link";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { useState } from "react";
 
 
