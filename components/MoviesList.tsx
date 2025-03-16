@@ -1,84 +1,87 @@
-import { useMovies } from "@/hooks/useContext";
-import styled from "styled-components";
+import Image from "next/image";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../app/store/store";
+import { fetchMoviesInitial } from "@/app/store/moviesSlice";
+import { useEffect, useState } from "react";
+import {
+  Card,
+  Container,
+  Grid,
+  PosterWrapper,
+  SectionMenu,
+  Title,
+} from "@/styles/MoviesLIst.styled";
+import { ImVideoCamera } from "react-icons/im";
+import { styled } from "styled-components";
+import Link from "next/link";
 
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  color: #fff;
-`;
-
-const Title = styled.h2`
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: black;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr); // Dokładnie 6 kolumn w rzędzie
-  gap: 15px;
-  justify-content: center;
-`;
-
-const Pp = styled.div`
+const SectionButton = styled.div`
   display: flex;
   justify-content: start;
-  align-items: center;
-  gap: 15px;
+  align-items: start;
 `;
 
-const Card = styled.div`
-  background: #1e1e1e;
-  border-radius: 8px;
-  overflow: hidden;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
-  }
+const SectionTitle = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  gap: 20px;
 `;
-
-const Poster = styled.img`
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
+const ButtonViewMore = styled.button`
+  background-color: blue;
+  color: wheat;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
 `;
-
-// const MovieTitle = styled.p`
-//   font-size: 1rem;
-//   padding: 10px;
-//   color: #d3c3c3;
-//   font-weight: 500;
-// `;
-
 export const MoviesList = () => {
-  const { movies, loading, error } = useMovies();
+  const { error, loading, movies } = useSelector(
+    (state: RootState) => state.movies
+  );
+  const dispatch = useDispatch<AppDispatch>();
+  const [showAllMovies, setShowAllMovies] = useState<boolean>(false);
 
-  if (loading) return <Container>Ładowanie filmów...</Container>;
+  useEffect(() => {
+    dispatch(fetchMoviesInitial());
+  }, [dispatch]);
+
+  const displayMoreMovies = showAllMovies ? movies : movies.slice(0, 10);
+
+  if (loading) return <Container>Loading movies...</Container>;
   if (error) return <Container>{error}</Container>;
 
   return (
     <Container>
-      <Pp>
-        <Title>Films</Title>
-        <Title>Latest</Title>
-        <Title>Best advised</Title>
-        <Title>Rating</Title>
-         <button>View more</button>
-      </Pp>
+      <SectionMenu>
+        <SectionTitle>
+          <Title>
+            <ImVideoCamera size={25} />
+            Films
+          </Title>
+          <Title>Latest</Title>
+          <Title>Best advised</Title>
+          <Title>Rating</Title>
+        </SectionTitle>
+        <SectionButton>
+          <ButtonViewMore onClick={() => setShowAllMovies(!showAllMovies)}>
+            {showAllMovies ? "Show Less" : "View More"}
+          </ButtonViewMore>
+        </SectionButton>
+      </SectionMenu>
 
       <Grid>
-        {movies.slice(0,18).map((movie) => (
+        {displayMoreMovies.map((movie) => (
           <Card key={movie.id}>
-            <Poster
-              src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-              alt={movie.title}
-            />
-            {/* <MovieTitle>{movie.title}</MovieTitle> */}
+            <PosterWrapper>
+              <Link href={`/movies/${movie.id}`}>
+                <Image
+                  src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                  alt={movie.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </Link>
+            </PosterWrapper>
           </Card>
         ))}
       </Grid>

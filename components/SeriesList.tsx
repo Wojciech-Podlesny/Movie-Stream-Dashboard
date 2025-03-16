@@ -1,81 +1,84 @@
-import { useMovies } from '@/hooks/useContext';
-import styled from 'styled-components';
+import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store/store";
+import { fetchMoviesInitial } from "@/app/store/moviesSlice";
+import { useEffect, useState } from "react";
+import { ImVideoCamera } from "react-icons/im";
 
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  color: #fff;
-`;
+import { styled } from "styled-components";
+import { Card, Grid, PosterWrapper, SectionMenu, Title } from "@/styles/MoviesLIst.styled";
+import { Container } from "@/styles/SeriesList.styled";
+import Link from "next/link";
 
-const Title = styled.h2`
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  font-weight: bold;
-  text-align: center;
-`;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 15px;
-  justify-content: center;
-`;
+const ButtonViewMore = styled.button`
+  background-color: blue;
+  color: wheat;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
 
-const Card = styled.div`
-  background: #1e1e1e;
-  border-radius: 8px;
-  overflow: hidden;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
-  }
-`;
-
-const Poster = styled.img`
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-`;
-
-const Pp = styled.div`
+`
+const SectionButton = styled.div`
   display: flex;
   justify-content: start;
-  align-items: center;
-  gap: 15px;
-  color: black;
-`;
+  align-items: start;
+`
 
-// const SeriesTitle = styled.p`
-//   font-size: 1rem;
-//   padding: 10px;
-//   color: #d3c3c3;
-//   font-weight: 500;
-// `;
+const SectionTitle = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  gap: 20px;
+`
+
 
 export const SeriesList = () => {
-  const { series, loading, error } = useMovies();
+  const {error,loading,series} = useSelector((state: RootState) => state.movies)
+  const dispatch = useDispatch<AppDispatch>()
+  const [showAllSeries,setShowAllSeries] = useState<boolean>(false)
 
-  if (loading) return <Container>Ładowanie seriali...</Container>;
+  const displayMoreSeries = showAllSeries ? series: series.slice(0,10)
+
+  useEffect(() => {
+    dispatch(fetchMoviesInitial())
+  }, [dispatch])
+  
+
+  if (loading) return <Container>Loading series...</Container>;
   if (error) return <Container>{error}</Container>;
 
   return (
     <Container>
-         <Pp>
-        <Title>Series</Title>
-        <Title>Latest</Title>
-        <Title>Best advised</Title>
-        <Title>Rating</Title>
-         <button>View more</button>
-      </Pp>
+          <SectionMenu>
+             <SectionTitle>
+               <Title>
+                 <ImVideoCamera size={25} />
+                 Films
+               </Title>
+               <Title>Latest</Title>
+               <Title>Best advised</Title>
+               <Title>Rating</Title>
+             </SectionTitle>
+             <SectionButton>
+               <ButtonViewMore onClick={() => setShowAllSeries(!showAllSeries)}>
+                 {showAllSeries ? "Show Less" : "View More"}
+               </ButtonViewMore>
+             </SectionButton>
+           </SectionMenu>
+     
       <Grid>
-        {series.slice(0,18).map((series) => (
+        {displayMoreSeries.map((series) => (
           <Card key={series.id}>
-            <Poster src={`https://image.tmdb.org/t/p/w200${series.poster_path}`} alt={series.name} />
-            {/* <SeriesTitle>{series.name}</SeriesTitle> */}
+            <PosterWrapper>
+            <Link href={`/series/${series.id}`}>
+            <Image
+                src={`https://image.tmdb.org/t/p/w200${series.poster_path}`}
+                alt={series.name}
+                fill
+                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              /></Link>
+            </PosterWrapper>
           </Card>
         ))}
       </Grid>

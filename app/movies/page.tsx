@@ -1,8 +1,8 @@
 "use client";
 import { FavouritesList } from "@/components/FavouritesList";
 import { Footer } from "@/components/Footer";
+import { MoviesList } from "@/components/MoviesList";
 import { Navbar } from "@/components/Navbar";
-import { SeriesList } from "@/components/SeriesList";
 import { Sidebar } from "@/components/Sidebar";
 import { styled } from "styled-components";
 
@@ -11,14 +11,14 @@ const Section = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-const Series = () => {
+const Movies = () => {
   return (
     <div>
       <Navbar />
 
       <Section>
         <Sidebar />
-        <SeriesList />
+        <MoviesList />
         <FavouritesList />
       </Section>
 
@@ -27,4 +27,4 @@ const Series = () => {
   );
 };
 
-export default Series;
+export default Movies;

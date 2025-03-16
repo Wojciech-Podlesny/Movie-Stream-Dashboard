@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 const List = styled.div`
   background-color: #1a1a2e;
+  width: 250px;
 `;
 
 const Heading = styled.p`
@@ -17,6 +18,3 @@ export const FavouritesList = () => {
     </List>
   );
 };
-
-
-//Kontekst//Lub redux//

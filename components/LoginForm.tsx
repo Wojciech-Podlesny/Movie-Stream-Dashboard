@@ -8,34 +8,13 @@ import {
   Input,
   ErrorMessage,
   SubmitButton,
+  FormContainer,
+  StyledForm,
+  Title,
+  Section,
 } from "@/styles/LoginForm.styled";
 import { signIn } from "next-auth/react";
-import { styled } from "styled-components";
-
-
-const FormContainer = styled.div`
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  color: #333;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
+import Link from "next/link";
 
 export const LoginForm = () => {
   const {
@@ -79,12 +58,11 @@ export const LoginForm = () => {
           )}
         </InputGroup>
         <SubmitButton type="submit">Sign in</SubmitButton>
-        {/* <LinkPassword>
-          <Link href="/reset-password">Forgot your password?</Link>
-        </LinkPassword> */}
+        <Section>
+          <Link href="/">Back home</Link>
+          <Link href="/reset-password">Forgot password?</Link>
+        </Section>
       </StyledForm>
     </FormContainer>
   );
 };
-
-

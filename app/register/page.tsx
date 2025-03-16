@@ -1,12 +1,17 @@
-import { RegisterForm } from "@/components/RegisterForm"
+'use client'
+import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
+import { RegisterForm } from "@/components/RegisterForm";
 
 
-const Register = () => {
-    return (
-      <div>
-        <RegisterForm />
-      </div>
-    )
-  }
-  
-export default Register  
+ const Register = () => {
+  return (
+    <div>
+      <Navbar />
+      <RegisterForm />
+      <Footer />
+    </div>
+  );
+};
+
+export default Register

@@ -7,6 +7,7 @@ export const Form = styled.form`
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
+  margin-top: 12rem;
   padding: 2rem;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -63,9 +64,34 @@ export const SubmitButton = styled.button`
     cursor: not-allowed;
   }
 `;
-export const Title = styled.h1`
-  font-size: 1.5rem;
-  color: #333;
+
+export const FormContainer = styled.div`
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  margin-top: 12rem;
+  margin-bottom: 12rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+export const Title = styled.h2`
   text-align: center;
+  color: #333;
+  font-size: 1.5rem;
   margin-bottom: 1rem;
+`;
+
+export const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+export const Section = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

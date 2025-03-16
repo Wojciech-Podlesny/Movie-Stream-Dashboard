@@ -16,6 +16,7 @@ import {
 // import { sendPasswordResetEmail } from "firebase/auth";
 // import { auth } from '@/lib/firebase';
 import { useState } from "react";
+import Link from "next/link";
 
 export const ResetPassword = () => {
   const [message, setMessage] = useState<string | null>(null);
@@ -54,6 +55,7 @@ export const ResetPassword = () => {
       <SubmitButton type="submit">Reset Password</SubmitButton>
       {message && <Message>{message}</Message>}
       {error && <Error>{error}</Error>}
+      <Link href='/'>Back home</Link>
     </Form>
   );
 };

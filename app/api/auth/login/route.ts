@@ -4,9 +4,16 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
-
   try {
+    const { email, password } = await req.json();
+
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email and password are required!" },
+        { status: 400 }
+      );
+    }
+
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -25,11 +32,3 @@ export async function POST(req: Request) {
     }
   }
 }
-
-
-// sprawdzic czy email , password jest odany , jezeli nie to//
-/*
-if(!email || !password){
-  return NextResponse.json({error: "Email and password are required!"},{status:400})
-}
-*/

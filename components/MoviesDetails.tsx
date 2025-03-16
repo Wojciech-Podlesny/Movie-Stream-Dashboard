@@ -1,89 +1,65 @@
-
-
+'use client'
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useParams } from "next/navigation";
+import { Container, Description, Info, Poster, PosterWrapper, Title } from "@/styles/MoviesDetails.styled";
 
-const Container = styled.div`
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  color: #fff;
-`;
-
-const Title = styled.h2`
-  font-size: 2rem;
-  text-align: center;
-  color: red;
-  margin-bottom: 20px;
-`;
-
-const Poster = styled.img`
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 10px;
-`;
-
-const Description = styled.p`
-  font-size: 1rem;
-  margin-top: 15px;
-  color: red;
-`;
 
 type Movie = {
-    id: number;
-    title: string;
-    poster_path: string;
-    overview?: string;
-    release_date?: string;
-    vote_average?: number;
-    genres?: { id: number; name: string }[];
-  };
+  id: number;
+  title: string;
+  poster_path: string;
+  overview?: string;
+  release_date?: string;
+  vote_average?: number;
+  genres?: { id: number; name: string }[];
+};
 
-export const MovieDetails = () => {
-    const [movieDetails, setMovieDetails] = useState<Movie | null>(null);
+const MovieDetails = () => {
+  const [movieDetails, setMovieDetails] = useState<Movie | null>(null);
+  const params = useParams();
+  const { id } = params;
 
-
-   useEffect(() => {
-    const fetchMovies = async () => {
+  useEffect(() => {
+    if (!id) return;
+    const fetchMovie = async () => {
       try {
-        
-        const response = await fetch(`https://api.themoviedb.org/3/movie/27205?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pl-PL`
-         
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pl-PL`
         );
 
         if (!response.ok) {
-          throw new Error('Error');
+          throw new Error("Error fetching movie details");
         }
 
-        const data  = await response.json();
-        setMovieDetails(data)
-        console.log(data)
-       
-        
-     
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (err: unknown) {
-        console.error('Error')
+        const data = await response.json();
+        setMovieDetails(data);
+      } catch (err) {
+        console.error("Error", err);
       }
     };
 
-    fetchMovies();
-  }, []);
+    fetchMovie();
+  }, [id]);
 
-
-  if (!movieDetails) return <Container>No movie details found</Container>;
-
-
+  if (!movieDetails) return <Container>Loading movie details...</Container>; //loader
 
   return (
     <Container>
       <Title>{movieDetails.title}</Title>
-      <Poster src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} alt={movieDetails.title} />
-      <Description>{movieDetails.overview}</Description>
-      <p>{movieDetails.release_date}</p>
+      <PosterWrapper>
+        <Poster
+          src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+          alt={movieDetails.title}
+        />
+        <Info>
+          <p><strong>Release Date:</strong> {movieDetails.release_date}</p>
+          <p><strong>Rating:</strong> {movieDetails.vote_average}/10</p>
+          <p><strong>Genres:</strong> {movieDetails.genres?.map(g => g.name).join(", ")}</p>
+          <Description>{movieDetails.overview}</Description>
+        </Info>
+      </PosterWrapper>
     </Container>
   );
 };
 
-
+export default MovieDetails;
