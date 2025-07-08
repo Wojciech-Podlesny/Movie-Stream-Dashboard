@@ -3,13 +3,11 @@
 ## Project overview
 
 ## Technologies
-
-- HTML
-- CSS
-- Styled-Components
+- Next.js
 - React
 - Typescript
-- NextJs
+- Material UI
+- Styled-Components
 - Redux
 - Firebase
 - Vitest
@@ -44,3 +42,32 @@ Developed by [Wojciech Podleśny](https://github.com/Wojciech-Podlesny)
 ## License
 
 This project is licensed under the ISC license.
+
+
+<!-- Plik Styles pliki
+
+LoginForm
+RegisterForm
+AccountForm
+ResetPassword
+CommentForm
+Layout
+Footer
+Sidebar
+PopularMovies
+PopularSeries
+Navbar
+SearchBar
+CategoriesSection
+NowPlayingMovies
+UpcomingMovies
+MoviesGrid
+SeriesGrid
+AccountDrawer
+MobileMenuDrawer
+FavouritesDrawer
+ -->
+
+
+
+

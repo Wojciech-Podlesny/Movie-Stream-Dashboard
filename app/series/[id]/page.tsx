@@ -1,61 +1,88 @@
-'use client'
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { Container, Description, Info, Poster, PosterWrapper, Title } from "@/styles/MoviesDetails.styled";
-import {type MovieDetails } from "@/types/Movies";
-import { Footer } from "@/components/Footer";
-import { Navbar } from "@/components/Navbar";
+"use client";
 
-const MovieDetails = () => {
-  const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
-  const params = useParams();
-  const { id } = params;
+import { useEffect } from "react";
+import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store/store";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { CircularProgress, styled } from "@mui/material";
+import { Sidebar } from "@/components/Sidebar";
+import { FavouritesList } from "@/components/FavouritesList";
+import Comments from "@/components/CommentForm";
+import {Section, TrailerWrapper,} from "@/styles/MoviesDetails.styled";
+import { Container } from "@/styles/PopularMovies.styled";
+import { fetchSeriesDetails, resetSeriesDetails } from "@/app/store/Media/detailsSeriesSlice";
+import { MoviesTrailer } from "@/components/MediaTrailer";
+import { MoviesHeader } from "@/components/MoviesHeader";
+
+
+const SectionMovies = styled("div")`
+  display: flex;
+  justify-content: center;
+`;
+
+
+const SeriesDetails = () => {
+  const { id } = useParams<{ id: string }>();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { series, loading, error } = useSelector((state: RootState) => state.seriesDetails);
 
   useEffect(() => {
-    if (!id) return;
-    const fetchMovie = async () => {
-      try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pl-PL`
-        );
+    if (id) {
+      dispatch(fetchSeriesDetails({ seriesId: id }));
+    }
 
-        if (!response.ok) {
-          throw new Error("Error fetching movie details");
-        }
-
-        const data = await response.json();
-        setMovieDetails(data);
-      } catch (err) {
-        console.error("Error", err);
-      }
+    return () => {
+      dispatch(resetSeriesDetails());
     };
+  }, [dispatch, id]);
 
-    fetchMovie();
-  }, [id]);
+  if (loading) {
+    return (
+      <Container>
+        <Navbar />
+        Loading details movies... <CircularProgress />
+        <Footer />
+      </Container>
+    );
+  }
 
-  if (!movieDetails) return <Container>Loading series details...</Container>;
-
+  if (error || !series) {
+    return (
+      <Container>
+        <Navbar />
+        <p>{error || "Not found details movies..."}</p>
+        <Footer />
+      </Container>
+    );
+  }
   return (
-    <div>
-          <Navbar />
+    <>
+      <Navbar />
+      <SectionMovies>
+        <Sidebar />
+        <Section>
           <Container>
-
-              <Title>{movieDetails.title}</Title>
-              <PosterWrapper>
-                  <Poster
-                      src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-                      alt={movieDetails.title} />
-                  <Info>
-                      <p><strong>Release Date:</strong> {movieDetails.release_date}</p>
-                      <p><strong>Rating:</strong> {movieDetails.vote_average}/10</p>
-                      <p><strong>Genres:</strong> {movieDetails.genres?.map(g => g.name).join(", ")}</p>
-                      <Description>{movieDetails.overview}</Description>
-                  </Info>
-              </PosterWrapper>
+            <MoviesHeader
+              posterPath={series.poster_path}
+              title={series.name}
+              releaseDate={series.first_air_date}
+              voteAverage={series.vote_average}
+              overview={series.overview}
+            />
+            <TrailerWrapper>
+              <MoviesTrailer movieTitle={series.name} />
+            </TrailerWrapper>
+            <Comments />
           </Container>
-          <Footer />
-      </div>
+          <FavouritesList />
+        </Section>
+      </SectionMovies>
+      <Footer />
+    </>
   );
 };
 
-export default MovieDetails;
+export default SeriesDetails;

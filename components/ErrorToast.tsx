@@ -1,22 +1,24 @@
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { toast } from "react-toastify";
 
-type ErrorToastProps = {
-	message: string
-}
+export const showErrorToast = (message: string) => {
+  toast.error(message, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  });
+};
 
-const ErrorToast = ({ message }: ErrorToastProps) => {
-	toast.error(message, {
-		position: 'top-right',
-		autoClose: 15000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: true,
-		draggable: true,
-		progress: undefined,
-	})
 
-	return <ToastContainer/>
-}
-
-export { ErrorToast }
+export const showSuccessToast = (message: string) => {
+  toast.error(message, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  });
+};

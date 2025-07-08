@@ -1,23 +1,24 @@
-import { FaSearch } from "react-icons/fa";
 import { styled } from "styled-components";
+import SearchIcon from '@mui/icons-material/Search';
 
 export const Container = styled.div`
   position: relative;
   width: 100%;
   max-width: 300px;
-  margin: 10px;
+  margin: 0 10px;  // tylko poziomy margines
 `;
 
 export const Input = styled.input`
   width: 100%;
-  padding: 10px 40px 10px 10px;
-  border: 3px solid black;
+  padding: 6px 35px 6px 10px;  // mniejszy padding (ok. 32-36px wysokości)
+  border: 2px solid black;
   border-radius: 15px;
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
+  box-sizing: border-box;
 `;
 
-export const SearchIcon = styled(FaSearch)`
+export const SearchIcons = styled(SearchIcon)`
   position: absolute;
   right: 10px;
   top: 50%;

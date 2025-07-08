@@ -1,6 +1,7 @@
 import { FooterContainer, FooterText, IconContainer, IconLink } from "@/styles/Footer.styled";
 import {format} from "date-fns"
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 export const Footer = () => {
   const currentYear = format(new Date(), "yyyy");
@@ -18,7 +19,7 @@ export const Footer = () => {
           rel="noopener noreferrer"
           aria-label="Linkedin"
         >
-          <FaLinkedin size="1.5em" data-testid="linkedins-link" />
+          <LinkedInIcon fontSize="large" />
         </IconLink>
         <IconLink
           data-testid="github-link"
@@ -27,7 +28,7 @@ export const Footer = () => {
           rel="noopener noreferrer"
           aria-label="GitHub"
         >
-          <FaGithub size="1.5em" data-testid="githubs-link" />
+          <GitHubIcon fontSize="large" />
         </IconLink>
       </IconContainer>
     </FooterContainer>

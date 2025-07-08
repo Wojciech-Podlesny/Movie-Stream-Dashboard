@@ -6,11 +6,11 @@ import { RegisterForm } from "@/components/RegisterForm";
 
  const Register = () => {
   return (
-    <div>
+    <>
       <Navbar />
       <RegisterForm />
       <Footer />
-    </div>
+    </>
   );
 };
 

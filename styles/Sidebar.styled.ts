@@ -10,6 +10,13 @@ export const CategoriesContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+   @media (max-width:768px) {
+   flex-direction: row;
+    width: 100%;
+    position: fixed;
+    top: 60px;
+  }
 `;
 
 
@@ -18,18 +25,31 @@ export const CategoryList = styled.ul<{ isVisible: boolean }>`
   padding: 10px;
   margin: 0;
   display: ${({ isVisible }) => (isVisible ? "block" : "none")};
+
+  @media (max-width: 768px) {
+    display: ${({ isVisible }) => (isVisible ? "grid" : "none")};
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 10px 0;
+  }
 `;
+
 
 export const CategoryItem = styled.li`
   font-size: 1rem;
-  margin-bottom: 8px;
   font-weight: 400;
-  color:rgb(255, 255, 255);
+  color: white;
   cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s;
 
   &:hover {
-    color: #fff;
+    color: #00ffd0;
     font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
   }
 `;
 
@@ -60,6 +80,15 @@ export const NavMenu = styled.nav`
   flex-direction: column;
   margin-top: 20px;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
 `;
 
 export const NavItem = styled(Link)<{ open: boolean }>`
@@ -77,10 +106,12 @@ export const NavItem = styled(Link)<{ open: boolean }>`
     color: white;
     font-weight: bold;
   }
+
 `;
 
 export const SidebarContainer = styled.div<{ open: boolean }>`
   width: 250px;
+  height: 100vh; /* Dodane, by sidebar miał pełną wysokość */
   background: #282828;
   color: white;
   left: 0;
@@ -91,21 +122,36 @@ export const SidebarContainer = styled.div<{ open: boolean }>`
   padding: 20px;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};
+  position: fixed; /* To sprawia, że sidebar jest przyklejony do widoku */
+  z-index: 999; /* Aby sidebar był nad innymi elementami */
 
-  @media (max-width:768px) {
-   display: none;
+  @media (max-width: 768px) {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    top: 53px;
   }
 `;
 
+
 export const CategoriesContainerStyled = styled.div<{ open: boolean }>`
   width: 250px;
-  height: 100vh;
-  background: #282828;
+  height: 100vh; 
+  background:rgba(13, 13, 29, 0.8);
   left: 0;
   top: 0;
   padding: 20px;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 53px;
+    padding: 10px;
+  }
 `;
 
 export const ToggleButton = styled.button`

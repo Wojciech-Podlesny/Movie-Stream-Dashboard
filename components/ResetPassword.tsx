@@ -1,26 +1,17 @@
 "use client";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ForgotPasswordFormData, ForgotPasswordSchema } from "@/lib/validation";
-import {
-  Form,
-  InputGroup,
-  Label,
-  Input,
-  ErrorMessage,
-  SubmitButton,
-  Title,
-  Error,
-  Message,
-} from "@/styles/ResetPassword.styled";
-// import { sendPasswordResetEmail } from "firebase/auth";
-// import { auth } from '@/lib/firebase';
+import { ForgotPasswordFormData, ForgotPasswordSchema } from "@/lib/validation/user-validation";
 import { useState } from "react";
+import { Box, TextField, Button, Typography, Link as MuiLink } from "@mui/material";
 import Link from "next/link";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "@/lib/firebase/firebase";
 
 export const ResetPassword = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -29,33 +20,91 @@ export const ResetPassword = () => {
     resolver: zodResolver(ForgotPasswordSchema),
   });
 
-  const onSubmit: SubmitHandler<ForgotPasswordFormData> = async (
-    data: ForgotPasswordFormData
-  ) => {
+  const onSubmit: SubmitHandler<ForgotPasswordFormData> = async (data:ForgotPasswordFormData) => {
     try {
-      // await sendPasswordResetEmail(auth,data.email)
-      setMessage("Message");
+      await sendPasswordResetEmail(auth, data.email);
+      setMessage("Password reset link sent! Check your inbox.");
       setError(null);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       setMessage(null);
-      setError("Error");
-      console.log(data)
+      setError("Something went wrong. Please try again.");
+    
     }
   };
 
+  //   const handleReset = async () => {
+  //   const res = await fetch('/api/account/reset-password', {
+  //     method: 'POST',
+  //     body: JSON.stringify({ email }),
+  //   });
+  //   const data = await res.json();
+  //   if (res.ok) alert('Link do resetu hasła wysłany!');
+  //   else alert(data.error);
+  // };
+
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Title>Reset Password</Title>
-      <InputGroup>
-        <Label htmlFor="email">Email</Label>
-        <Input type="email" {...register("email")} />
-        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-      </InputGroup>
-      <SubmitButton type="submit">Reset Password</SubmitButton>
-      {message && <Message>{message}</Message>}
-      {error && <Error>{error}</Error>}
-      <Link href='/'>Back home</Link>
-    </Form>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      maxWidth="400px"
+      mx="auto"
+      my="12rem"
+      p={4}
+      borderRadius={2}
+      bgcolor="#f9f9f9"
+      boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
+      display="flex"
+      flexDirection="column"
+      gap={3}
+    >
+      <Typography variant="h5" align="center" mb={1} color="#333">
+        Reset Password
+      </Typography>
+
+      <TextField
+        label="Email"
+        type="email"
+        fullWidth
+        variant="outlined"
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        fullWidth
+        sx={{
+          py: "0.75rem",
+          fontWeight: "bold",
+          backgroundColor: "#0070f3",
+          "&:hover": { backgroundColor: "#005bb5" },
+          "&:disabled": { backgroundColor: "#ccc", cursor: "not-allowed" },
+        }}
+      >
+        Reset Password
+      </Button>
+
+      {message && (
+        <Typography sx={{ color: "green", fontSize: "0.875rem", textAlign: "center" }}>
+          {message}
+        </Typography>
+      )}
+
+      {error && (
+        <Typography sx={{ color: "red", fontSize: "0.875rem", textAlign: "center" }}>
+          {error}
+        </Typography>
+      )}
+
+      <Box textAlign="center" mt={1}>
+        <MuiLink component={Link} href="/" underline="hover">
+          Back home
+        </MuiLink>
+      </Box>
+    </Box>
   );
 };

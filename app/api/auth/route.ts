@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { auth } from '@/lib/firebase';
+import { auth } from '@/lib/firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const handler = NextAuth({
@@ -11,6 +11,7 @@ const handler = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
+      
       authorize: async (credentials) => {
         if (!credentials) return null;
         try {

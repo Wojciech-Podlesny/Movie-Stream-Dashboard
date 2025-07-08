@@ -1,61 +1,87 @@
-'use client'
-import { useEffect, useState } from "react";
+"use client";
+
+import { useEffect } from "react";
 import { useParams } from "next/navigation";
-import { Container, Description, Info, Poster, PosterWrapper, Title } from "@/styles/MoviesDetails.styled";
-import { type MovieDetails } from "@/types/Movies";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store/store";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { MoviesTrailer } from "@/components/MediaTrailer";
+import { Container } from "@/styles/PopularMovies.styled";
+import { MoviesHeader } from "@/components/MoviesHeader";
+import {
+  fetchMoviesDetails,
+  resetMoviesDetails,
+} from "@/app/store/Media/detailsMoviesSlice";
+import { renderError, renderLoading } from "@/utils/renderError";
+
+
+import { styled } from "styled-components";
+import { CommentForm } from "@/components/CommentForm";
+
+
+ const SectionMovies = styled("div")`
+  display: flex;
+  justify-content: center;
+`;
+
+ const Section = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+ const TrailerWrapper = styled.div`
+  margin-top: 40px;
+`;
+
 
 
 const MovieDetails = () => {
-  const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null);
-  const params = useParams();
-  const { id } = params;
+  const { id } = useParams<{ id: string }>();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { movie, loading, error } = useSelector(
+    (state: RootState) => state.moviesDetails
+  );
 
   useEffect(() => {
-    if (!id) return;
-    const fetchMovie = async () => {
-      try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pl-PL`
-        );
+    if (id) {
+      dispatch(fetchMoviesDetails({ movieId: id }));
+    }
 
-        if (!response.ok) {
-          throw new Error("Error fetching movie details");
-        }
-
-        const data = await response.json();
-        setMovieDetails(data);
-      } catch (err) {
-        console.error("Error", err);
-      }
+    return () => {
+      dispatch(resetMoviesDetails());
     };
+  }, [dispatch, id]);
 
-    fetchMovie();
-  }, [id]);
-
-  if (!movieDetails) return <Container>Loading movies details...</Container>;
+  if (loading) return renderLoading();
+  if (error || !movie) return renderError(error);
 
   return (
-    <div>
-          <Navbar />
+    <>
+      <Navbar />
+      <SectionMovies>
+        <Section>
           <Container>
-
-              <Title>{movieDetails.title}</Title>
-              <PosterWrapper>
-                  <Poster
-                      src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-                      alt={movieDetails.title} />
-                  <Info>
-                      <p><strong>Release Date:</strong> {movieDetails.release_date}</p>
-                      <p><strong>Rating:</strong> {movieDetails.vote_average}/10</p>
-                      <p><strong>Genres:</strong> {movieDetails.genres?.map(g => g.name).join(", ")}</p>
-                      <Description>{movieDetails.overview}</Description>
-                  </Info>
-              </PosterWrapper>
+            <MoviesHeader
+              posterPath={movie.poster_path}
+              title={movie.title}
+              releaseDate={movie.release_date}
+              voteAverage={movie.vote_average}
+              overview={movie.overview}
+              id={movie.id}
+            />
+            <TrailerWrapper>
+              <MoviesTrailer movieTitle={movie.title} />
+            </TrailerWrapper>
+            <CommentForm />
           </Container>
-          <Footer />
-      </div>
+        </Section>
+
+      </SectionMovies>
+      <Footer />
+    </>
   );
 };
 
