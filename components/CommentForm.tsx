@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { TextField, Button, Tooltip } from '@mui/material';
@@ -9,6 +11,11 @@ type Comment = {
   date: string;
   text: string;
   rating: number;
+};
+
+type Props = {
+  itemId: string;
+  type: 'movie';
 };
 
 const fadeInUp = keyframes`
@@ -110,14 +117,14 @@ const NoComment = styled.p`
   font-style: italic;
 `;
 
-export const CommentForm = () => {
+export const CommentForm = ({ itemId, type }: Props) => {
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState<Comment[]>([]);
 
   const fetchComments = async () => {
     try {
-      const res = await fetch('api/comments');
+      const res = await fetch(`/api/comments?itemId=${itemId}&type=${type}`);
       const data = await res.json();
       setComments(data);
     } catch (error) {
@@ -127,7 +134,7 @@ export const CommentForm = () => {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [itemId, type]);
 
   const handleSubmit = async () => {
     if (!text || rating === 0) return;
@@ -140,13 +147,24 @@ export const CommentForm = () => {
           username: 'TestUser',
           rating,
           text,
+          itemId,
+          type,
         }),
       });
 
       const newComment = await res.json();
 
       if (res.ok) {
-        setComments((prev) => [...prev, newComment]);
+        setComments((prev) => [
+          ...prev,
+          {
+            ...newComment,
+            username: 'TestUser',
+            rating,
+            text,
+            date: new Date().toLocaleDateString(),
+          },
+        ]);
         setText('');
         setRating(0);
       } else {
@@ -185,7 +203,7 @@ export const CommentForm = () => {
       <Label>Your Comment:</Label>
       <TextField
         fullWidth
-        placeholder="Write something about the movie..."
+        placeholder="Write something about the movie or series..."
         multiline
         rows={3}
         variant="outlined"
@@ -209,7 +227,7 @@ export const CommentForm = () => {
         }}
       />
 
-      <StyledButton fullWidth onClick={handleSubmit}>
+      <StyledButton fullWidth onClick={handleSubmit} disabled={!text || rating === 0}>
         Submit Review
       </StyledButton>
 
@@ -222,7 +240,7 @@ export const CommentForm = () => {
               <CommentHeader>
                 <strong>{comment.username}</strong>
                 <span>
-                  ({comment.date} | Rating: {comment.rating}/10)
+                  ({comment.date ?? 'Recently'} | Rating: {comment.rating}/10)
                 </span>
               </CommentHeader>
               <CommentText>{comment.text}</CommentText>
@@ -233,153 +251,3 @@ export const CommentForm = () => {
     </Container>
   );
 };
-
-
-
-
-// import React, { useEffect, useState } from 'react';
-// import styled, { keyframes } from 'styled-components';
-// import { TextField, Button, Tooltip } from '@mui/material';
-// import StarIcon from '@mui/icons-material/Star';
-
-// type Comment = {
-//   id: string;
-//   username: string;
-//   date: string;
-//   text: string;
-//   rating: number;
-// };
-
-// type CommentFormProps = {
-//   movieId: string;
-// };
-
-// export const CommentForm = ({ movieId }: CommentFormProps) => {
-//   const [text, setText] = useState('');
-//   const [rating, setRating] = useState(0);
-//   const [comments, setComments] = useState<Comment[]>([]);
-
-//   const fetchComments = async () => {
-//     try {
-//       const res = await fetch(`/api/comments/${movieId}`);
-//       const data = await res.json();
-//       setComments(data);
-//     } catch (error) {
-//       console.error('Failed to load comments', error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchComments();
-//   }, [movieId]);
-
-//   const handleSubmit = async () => {
-//     if (!text || rating === 0) return;
-
-//     try {
-//       const res = await fetch(`/api/comments/${movieId}`, {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({
-//           username: 'TestUser', // ← można zastąpić aktualnym użytkownikiem
-//           rating,
-//           text,
-//         }),
-//       });
-
-//       const result = await res.json();
-
-//       if (res.ok) {
-//         setComments((prev) => [...prev, {
-//           id: result.id,
-//           username: 'TestUser',
-//           rating,
-//           text,
-//           date: new Date().toLocaleDateString(), // tymczasowo
-//         }]);
-//         setText('');
-//         setRating(0);
-//       } else {
-//         console.error('Server error:', result.message);
-//       }
-//     } catch (error) {
-//       console.error('Error submitting comment:', error);
-//     }
-//   };
-
-//   const handleStarClick = (index: number) => {
-//     setRating(index + 1);
-//   };
-
-//   return (
-//     <Container>
-//       <Title>Leave a Review</Title>
-
-//       <Label>Rating (1–10):</Label>
-//       <StarsContainer>
-//         {[...Array(10)].map((_, index) => (
-//           <Tooltip title={`${index + 1}/10`} key={index}>
-//             <StarIcon
-//               onClick={() => handleStarClick(index)}
-//               style={{
-//                 cursor: 'pointer',
-//                 color: index < rating ? '#facc15' : '#555',
-//                 fontSize: '30px',
-//                 transition: 'color 0.3s',
-//               }}
-//             />
-//           </Tooltip>
-//         ))}
-//       </StarsContainer>
-
-//       <Label>Your Comment:</Label>
-//       <TextField
-//         fullWidth
-//         placeholder="Write something about the movie..."
-//         multiline
-//         rows={3}
-//         variant="outlined"
-//         value={text}
-//         onChange={(e) => setText(e.target.value)}
-//         sx={{
-//           backgroundColor: '#2c2c2c',
-//           borderRadius: '12px',
-//           marginBottom: '20px',
-//           input: { color: '#f1f1f1' },
-//           textarea: { color: '#f1f1f1' },
-//           '& .MuiOutlinedInput-notchedOutline': {
-//             borderColor: '#444',
-//           },
-//           '&:hover .MuiOutlinedInput-notchedOutline': {
-//             borderColor: '#666',
-//           },
-//           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-//             borderColor: '#facc15',
-//           },
-//         }}
-//       />
-
-//       <StyledButton fullWidth onClick={handleSubmit}>
-//         Submit Review
-//       </StyledButton>
-
-//       {comments.length === 0 ? (
-//         <NoComment>No comments yet. Be the first to write one!</NoComment>
-//       ) : (
-//         <CommentsList>
-//           {comments.map((comment) => (
-//             <CommentItem key={comment.id}>
-//               <CommentHeader>
-//                 <strong>{comment.username}</strong>
-//                 <span>
-//                   ({comment.date} | Rating: {comment.rating}/10)
-//                 </span>
-//               </CommentHeader>
-//               <CommentText>{comment.text}</CommentText>
-//             </CommentItem>
-//           ))}
-//         </CommentsList>
-//       )}
-//     </Container>
-//   );
-// };

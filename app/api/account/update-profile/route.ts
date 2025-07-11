@@ -1,28 +1,35 @@
-import { getAuth, updateProfile } from 'firebase/auth';
-import { app } from '@/lib/firebase/firebase';
-import { NextResponse } from 'next/server';
+import { getAuth } from "firebase-admin/auth";
+import { getAdminApp } from "@/lib/firebase/firebase.server";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { displayName } = await req.json();
-  const auth = getAuth(app);
+  const authHeader = req.headers.get("authorization");
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return NextResponse.json({ error: "No authentication token." }, { status: 401 });
+  }
+
+  const token = authHeader.split("Bearer ")[1];
+  const adminAuth = getAuth(getAdminApp());
 
   try {
-    const user = auth.currentUser;
+    const decoded = await adminAuth.verifyIdToken(token);
+    const uid = decoded.uid;
 
-    if (!user) {
-      return NextResponse.json({ error: 'Nie jesteś zalogowany.' }, { status: 401 });
+    const { displayName } = await req.json();
+
+    if (!displayName) {
+      return NextResponse.json({ error: "No new username" }, { status: 400 });
     }
 
-    await updateProfile(user, { displayName });
+    await adminAuth.updateUser(uid, { displayName });
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    let errorMessage = 'Wystąpił błąd podczas aktualizacji profilu.';
+    let errorMessage = "Error during profile update.";
 
     if (err instanceof Error) {
       errorMessage = err.message;
-    } else if (typeof err === 'string') {
-      errorMessage = err;
     }
 
     return NextResponse.json({ error: errorMessage }, { status: 400 });

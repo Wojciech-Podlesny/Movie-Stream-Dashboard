@@ -20,7 +20,15 @@ export async function POST(req: Request) {
       password
     );
     const user = userCredential.user;
-    return NextResponse.json({ id: user.uid, email: user.email });
+    const idToken = await user.getIdToken()   //dodanie id token//pobranie
+
+    return NextResponse.json({ 
+      id: user.uid, 
+      email: user.email,
+      idToken, //dodanie idToken
+      name: user.displayName, //dodanie name
+      emailVerified: user.emailVerified //dodanie emailVerified
+    }); 
   } catch (error) {
     if (error instanceof FirebaseError) {
       return NextResponse.json({ error: error.message }, { status: 400 });

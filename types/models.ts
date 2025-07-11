@@ -11,6 +11,8 @@ export type Category = {
   
 
   export type Movie = {
+    type: "movie" | "series";
+    isFavorite: boolean;
     genres: boolean;
     genres: any;
     overview: string;

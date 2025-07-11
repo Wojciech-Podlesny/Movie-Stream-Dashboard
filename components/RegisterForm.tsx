@@ -1,10 +1,23 @@
 "use client";
+
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterSchema, type RegisterFormData } from "@/lib/validation/user-validation";
-import {Box,TextField,Button,Typography,Link as MuiLink,} from "@mui/material";
+import {
+  RegisterSchema,
+  type RegisterFormData,
+} from "@/lib/validation/user-validation";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Link as MuiLink,
+} from "@mui/material";
 import Link from "next/link";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { useRouter } from "next/navigation";
 
@@ -20,23 +33,34 @@ export const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     try {
-      await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          username: data.username,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Registration failed");
+      }
+
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+
+      if (auth.currentUser) {
+        await sendEmailVerification(auth.currentUser);
+        alert("Verification email sent. Please check your inbox.");
+      }
       router.push("/login");
     } catch (error) {
-      console.log("Error", error);
+      console.log("Register error:", error);
+      alert(error instanceof Error ? error.message : "Registration failed");
+      router.push("/register")
     }
   };
-
-  //   const handleRegister = async () => {
-  //   const res = await fetch('/api/account/register', {
-  //     method: 'POST',
-  //     body: JSON.stringify({ email, password }),
-  //   });
-  //   const data = await res.json();
-  //   if (res.ok) alert('Zarejestrowano!');
-  //   else alert(data.error);
-  // };
-
 
   return (
     <Box
@@ -52,7 +76,13 @@ export const RegisterForm = () => {
       <Typography variant="h5" align="center" mb={2} color="#333">
         Sign Up
       </Typography>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} display="flex" flexDirection="column" gap={3}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        display="flex"
+        flexDirection="column"
+        gap={3}
+      >
         <TextField
           label="Username"
           fullWidth
@@ -60,7 +90,7 @@ export const RegisterForm = () => {
           error={!!errors.username}
           helperText={errors.username?.message}
         />
-        <TextField 
+        <TextField
           label="Email"
           type="email"
           fullWidth

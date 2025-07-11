@@ -1,23 +1,32 @@
-import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
-import { app } from '@/lib/firebase/firebase';
-import { NextResponse } from 'next/server';
+import { getAuth } from "firebase-admin/auth";
+import { getAdminApp } from "@/lib/firebase/firebase.server";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { email, currentPassword, newPassword } = await req.json();
-  const auth = getAuth(app);
+  const authHeader = req.headers.get("authorization");
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return NextResponse.json({ error: "No authentication token." }, { status: 401 });
+  }
+
+  const token = authHeader.split("Bearer ")[1];
+  const adminAuth = getAuth(getAdminApp());
 
   try {
-    const user = auth.currentUser;
+    const decoded = await adminAuth.verifyIdToken(token);
+    const uid = decoded.uid;
 
-    if (!user || !user.email) throw new Error('Nie jesteś zalogowany.');
+    const { newPassword } = await req.json();
 
-    const credential = EmailAuthProvider.credential(email, currentPassword);
-    await reauthenticateWithCredential(user, credential);
+    if (!newPassword || newPassword.length < 6) {
+      return NextResponse.json({ error: "The password must be at least 6 characters long" }, { status: 400 });
+    }
 
-    await updatePassword(user, newPassword);
+    await adminAuth.updateUser(uid, { password: newPassword });
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    return NextResponse.json({ error: err }, { status: 400 });
+    const message = (err);
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }

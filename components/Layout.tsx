@@ -8,7 +8,7 @@ import { PopularMovies } from "./PopularMovies";
 import styled from "styled-components";
 import { PopularSeries } from "./PopularSeries";
 import { SearchBar} from "./SearchBar";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 
 
@@ -74,8 +74,8 @@ const Section = styled.section`
 `;
 
 export const Layout = () => {
-  const { status } = useSession();
-  const isAuthenticated = status === "authenticated";
+  // const { status } = useSession();
+  // const isAuthenticated = status === "authenticated";
 
   return (
     <PageWrapper>
@@ -96,11 +96,11 @@ export const Layout = () => {
      
         </ContentArea>
 
-        {isAuthenticated && (
+        {/* {isAuthenticated && ( */}
           <RightSidebar>
             <FavouritesList />
           </RightSidebar>
-        )}
+        {/* )} */}
       </MainGrid>
       <Footer />
     </PageWrapper>

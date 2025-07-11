@@ -15,8 +15,6 @@ import {
   type LoginFormData,
 } from "@/lib/validation/user-validation";
 import { useState } from "react";
-// import GoogleLoginButton from "./ButtonGoogle";
-
 
 
 export const LoginForm = () => {
@@ -46,7 +44,7 @@ export const LoginForm = () => {
   };
 
   const handleGoogleLogin = async () => {
-    await signIn('google')
+    await signIn("google")
   }
 
   return (
@@ -133,7 +131,6 @@ export const LoginForm = () => {
             Forgot password?
           </MuiLink>
         </Box>
-        {/* <GoogleLoginButton /> */}
       </Box>
   );
 };

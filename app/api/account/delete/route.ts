@@ -1,17 +1,28 @@
-import { getAuth, deleteUser } from 'firebase/auth';
-import { app } from '@/lib/firebase/firebase';
-import { NextResponse } from 'next/server';
+import { getAuth } from "firebase-admin/auth";
+import { getAdminApp } from "@/lib/firebase/firebase.server";
+import { NextResponse } from "next/server";
 
-export async function POST() {
-  const auth = getAuth(app);
-  const user = auth.currentUser;
+
+export async function POST(req: Request) {
+  const authHeader = req.headers.get("authorization");
+
+  if(!authHeader || authHeader.startsWith("Bearer ")) {
+    return NextResponse.json({error: "No authentication token."}, {status: 401});
+  }
+
+  const token = authHeader.split("Bearer")[1]
+  const adminAuth = getAuth(getAdminApp())
 
   try {
-    if (!user) throw new Error('Brak zalogowanego użytkownika.');
-    await deleteUser(user);
+    const decoded = await adminAuth.verifyIdToken(token)
+    const uid = decoded.uid;
 
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    return NextResponse.json({ error: err }, { status: 400 });
+    await adminAuth.deleteUser(uid);
+
+    return NextResponse.json({success: true})
+    
+  } catch(error) {
+    return NextResponse.json({error}, {status: 400})
   }
+
 }
