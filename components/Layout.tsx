@@ -1,16 +1,11 @@
 "use client";
-
-import { FavouritesList } from "./FavouritesList";
 import { Footer } from "./Footer";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import { PopularMovies } from "./PopularMovies";
 import styled from "styled-components";
 import { PopularSeries } from "./PopularSeries";
-import { SearchBar} from "./SearchBar";
-// import { useSession } from "next-auth/react";
-
-
+import { SearchBar } from "./SearchBar";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -74,9 +69,6 @@ const Section = styled.section`
 `;
 
 export const Layout = () => {
-  // const { status } = useSession();
-  // const isAuthenticated = status === "authenticated";
-
   return (
     <PageWrapper>
       <Navbar />
@@ -89,17 +81,10 @@ export const Layout = () => {
           <Section>
             <SearchBar />
           </Section>
-
           <PopularMovies />
           <PopularSeries />
-      
-     
         </ContentArea>
-
-        {/* {isAuthenticated && ( */}
-          <RightSidebar>
-            <FavouritesList />
-          </RightSidebar>
+        <RightSidebar>{/* <FavouritesList />  */}</RightSidebar>
         {/* )} */}
       </MainGrid>
       <Footer />

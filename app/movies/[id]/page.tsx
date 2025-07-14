@@ -17,7 +17,8 @@ import { renderError, renderLoading } from "@/utils/renderError";
 
 
 import { styled } from "styled-components";
-import { CommentForm }  from "@/components/CommentForm";
+import { CommentForm } from "@/components/CommentForm";
+
 
  const SectionMovies = styled("div")`
   display: flex;
@@ -74,7 +75,6 @@ const MovieDetails = ({ params }: { params: { id: string } }) => {
             <TrailerWrapper>
               <MoviesTrailer movieTitle={movie.title} />
             </TrailerWrapper>
-            {/* <CommentForm  /> */}
                <CommentForm itemId={params.id} type="movie" />
           </Container>
         </Section>

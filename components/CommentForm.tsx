@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { TextField, Button, Tooltip } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import { useSession } from 'next-auth/react';
 
 type Comment = {
   id: string;
@@ -15,18 +16,12 @@ type Comment = {
 
 type Props = {
   itemId: string;
-  type: 'movie';
+  type: 'movie' | 'series';
 };
 
 const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
 const Container = styled.div`
@@ -41,20 +36,12 @@ const Container = styled.div`
 
 const Title = styled.h2`
   font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 24px;
   text-align: center;
-`;
-
-const Label = styled.p`
-  font-weight: bold;
-  margin: 16px 0 8px;
-  font-size: 1rem;
+  margin-bottom: 24px;
 `;
 
 const StarsContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
   gap: 6px;
   margin: 10px 0 20px;
 `;
@@ -63,13 +50,9 @@ const StyledButton = styled(Button)`
   background: linear-gradient(to right, #facc15, #f59e0b);
   color: white;
   border-radius: 9999px;
-  padding: 8px 24px;
-  text-transform: none;
   font-weight: bold;
-
-  &:hover {
-    background: linear-gradient(to right, #fbbf24, #f59e0b);
-  }
+  padding: 8px 24px;
+  &:hover { background: linear-gradient(to right, #fbbf24, #f59e0b); }
 `;
 
 const CommentsList = styled.div`
@@ -81,32 +64,21 @@ const CommentsList = styled.div`
 
 const CommentItem = styled.div`
   background: #2e2e2e;
-  color: #f1f1f1;
   padding: 16px;
   border-radius: 12px;
-  position: relative;
   animation: ${fadeInUp} 0.4s ease forwards;
 `;
 
 const CommentHeader = styled.div`
-  margin-bottom: 6px;
   font-size: 14px;
-
-  strong {
-    color: #facc15;
-  }
-
-  span {
-    color: #999;
-    font-size: 13px;
-    margin-left: 6px;
-  }
+  margin-bottom: 6px;
+  color: #999;
+  strong { color: #facc15; }
 `;
 
 const CommentText = styled.p`
   margin: 0;
   font-size: 15px;
-  line-height: 1.5;
   color: #ddd;
 `;
 
@@ -118,103 +90,109 @@ const NoComment = styled.p`
 `;
 
 export const CommentForm = ({ itemId, type }: Props) => {
+  const { data: session } = useSession();
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState<Comment[]>([]);
 
-  const fetchComments = async () => {
-    try {
-      const res = await fetch(`/api/comments?itemId=${itemId}&type=${type}`);
-      const data = await res.json();
-      setComments(data);
-    } catch (error) {
-      console.error('Failed to load comments', error);
-    }
-  };
+  // const fetchComments = async () => {
+  //   try {
+  //     const idToken = session?.user.idToken;
+  //     const res = await fetch(`/api/account/comments?itemId=${itemId}&type=${type}`, {
+  //       headers: {
+  //         'Authorization': `Bearer ${idToken}`,
+  //       }
+  //     });
+  //     const data = await res.json();
+  //     setComments(data);
+  //   } catch (error) {
+  //     console.error("Failed to fetch comments", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchComments();
-  }, [itemId, type]);
+  // useEffect(() => {
+  //   fetchComments();
+  // }, [ itemId, type ]);
 
   const handleSubmit = async () => {
     if (!text || rating === 0) return;
 
+    if (!session?.user?.idToken) {
+      alert("You must be logged in to comment.");
+      return;
+    }
+
     try {
-      const res = await fetch('/api/comments', {
+      const idToken = session.user.idToken;
+      const username = session.user.name || session.user.email || "User";
+
+      const res = await fetch('/api/account/comments', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: 'TestUser',
-          rating,
-          text,
-          itemId,
-          type,
-        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({ text, rating, itemId, type, username }),
       });
 
-      const newComment = await res.json();
+      const result = await res.json();
 
-      if (res.ok) {
-        setComments((prev) => [
-          ...prev,
-          {
-            ...newComment,
-            username: 'TestUser',
-            rating,
-            text,
-            date: new Date().toLocaleDateString(),
-          },
-        ]);
-        setText('');
-        setRating(0);
-      } else {
-        console.error('Server error:', newComment.message);
+      if (!res.ok) {
+        console.error("Server error:", result.error);
+        alert(result.error || "Error submitting comment.");
+        return;
       }
-    } catch (error) {
-      console.error('Error submitting comment:', error);
-    }
-  };
 
-  const handleStarClick = (index: number) => {
-    setRating(index + 1);
+      setComments((prev) => [
+        {
+          id: result.id,
+          username,
+          text,
+          rating,
+          date: new Date().toLocaleDateString(),
+        },
+        ...prev,
+      ]);
+
+      setText('');
+      setRating(0);
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+      alert("Failed to submit comment. Please try again later.");
+    }
   };
 
   return (
     <Container>
       <Title>Leave a Review</Title>
 
-      <Label>Rating (1–10):</Label>
+      <label>Rating (1–10):</label>
       <StarsContainer>
         {[...Array(10)].map((_, index) => (
           <Tooltip title={`${index + 1}/10`} key={index}>
             <StarIcon
-              onClick={() => handleStarClick(index)}
+              onClick={() => setRating(index + 1)}
               style={{
                 cursor: 'pointer',
                 color: index < rating ? '#facc15' : '#555',
                 fontSize: '30px',
-                transition: 'color 0.3s',
               }}
             />
           </Tooltip>
         ))}
       </StarsContainer>
 
-      <Label>Your Comment:</Label>
       <TextField
         fullWidth
-        placeholder="Write something about the movie or series..."
         multiline
         rows={3}
         variant="outlined"
+        placeholder="Write your comment..."
         value={text}
         onChange={(e) => setText(e.target.value)}
         sx={{
           backgroundColor: '#2c2c2c',
           borderRadius: '12px',
-          marginBottom: '20px',
-          input: { color: '#f1f1f1' },
-          textarea: { color: '#f1f1f1' },
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#444',
           },
@@ -232,16 +210,13 @@ export const CommentForm = ({ itemId, type }: Props) => {
       </StyledButton>
 
       {comments.length === 0 ? (
-        <NoComment>No comments yet. Be the first to write one!</NoComment>
+        <NoComment>No comments yet. Be the first!</NoComment>
       ) : (
         <CommentsList>
           {comments.map((comment) => (
             <CommentItem key={comment.id}>
               <CommentHeader>
-                <strong>{comment.username}</strong>
-                <span>
-                  ({comment.date ?? 'Recently'} | Rating: {comment.rating}/10)
-                </span>
+                <strong>{comment.username}</strong> <span>({comment.date} | {comment.rating}/10)</span>
               </CommentHeader>
               <CommentText>{comment.text}</CommentText>
             </CommentItem>
