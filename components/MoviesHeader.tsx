@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { AddToFavoritesButton } from "@/components/AddToFavoritesButton";
+
 import { styled } from "styled-components";
 import { useState } from "react";
 import {
@@ -8,6 +8,7 @@ import {
   Tooltip,
   Collapse,
 } from "@mui/material";
+import { FavouritesButton } from "./FavouritesButton";
 
 // Stylizacja wrappera
 const DetailsLayout = styled.div`
@@ -195,10 +196,16 @@ export const MoviesHeader = ({
 </MetaData>
 
 
-      <AddToFavoritesButton
-        movie={{ id, title, posterPath, releaseDate, voteAverage, overview }}
-      />
-
+    <FavouritesButton
+      itemId={id.toString()}
+      type="movie"
+      data={{
+        title: title,
+        poster_path: posterPath,
+        releaseDate: releaseDate,
+        vote_average: voteAverage,
+      }}
+    />
       <OverviewSection>
         <Typography variant="subtitle1" component="h6">
           Opis:

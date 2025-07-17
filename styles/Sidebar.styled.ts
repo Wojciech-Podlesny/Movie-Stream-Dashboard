@@ -111,7 +111,7 @@ export const NavItem = styled(Link)<{ open: boolean }>`
 
 export const SidebarContainer = styled.div<{ open: boolean }>`
   width: 250px;
-  height: 100vh; /* Dodane, by sidebar miał pełną wysokość */
+  height: 100vh; 
   background: #282828;
   color: white;
   left: 0;
@@ -122,8 +122,8 @@ export const SidebarContainer = styled.div<{ open: boolean }>`
   padding: 20px;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};
-  position: fixed; /* To sprawia, że sidebar jest przyklejony do widoku */
-  z-index: 999; /* Aby sidebar był nad innymi elementami */
+  position: fixed; 
+  z-index: 999; 
 
   @media (max-width: 768px) {
     flex-direction: row;

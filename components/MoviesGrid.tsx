@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 import { useState } from "react";
 import { MediaShowAllButton } from "./MediaShowAllButton";
 import { Movie } from "@/types";
+import { FavouritesButton } from "./FavouritesButton";
 
 type Props = {
   movies: Movie[];
@@ -117,6 +118,16 @@ export const MoviesGrid = ({ movies }: Props) => {
                 <Rating>{movie.vote_average?.toFixed(1)} ⭐</Rating>
               </PosterOverlay>
             </Link>
+            <FavouritesButton
+              itemId={movie.id.toString()}
+              type="movie"
+              data={{
+                title: movie.title,
+                poster_path: movie.poster_path,
+                releaseDate: movie.releaseDate,
+                vote_average: movie.vote_average,
+              }}
+            />
           </PosterWrapper>
         </Card>
       ))}

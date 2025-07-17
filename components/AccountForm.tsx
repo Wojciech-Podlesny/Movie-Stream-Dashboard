@@ -112,7 +112,7 @@ export const AccountForm = () => {
      const res3 = await fetch("/api/account/delete", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${session?.user.idToken}`, //add 
+          Authorization: `Bearer ${session?.user.idToken}`, 
           "Content-Type": "application/json",
         },
       });

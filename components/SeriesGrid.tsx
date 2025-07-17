@@ -39,7 +39,7 @@ import { styled } from "styled-components";
 
 import { MediaShowAllButton } from "./MediaShowAllButton";
 import { useState } from "react";
-import { FavoriteToggleIconSeries } from "./FavouriteToogleIconSeries";
+
 
 
 type Series = {
@@ -128,14 +128,6 @@ export const SeriesGrid = ({ series }: Props) => {
           <Card key={series.id}>
             <PosterWrapper>
               <PosterContainer>
-              <FavoriteToggleIconSeries series={{
-                id: series.id,
-                name: series.name,
-                poster_path: series.poster_path,
-                first_air_date: series.first_air_date || "",
-                vote_average: series.vote_average || 0,
-                overview: series.overview || "",
-              }} />  
                 <Link href={`/series/${series.id}`}>
                   <Image
                     src={`https://image.tmdb.org/t/p/w200${series.poster_path}`}

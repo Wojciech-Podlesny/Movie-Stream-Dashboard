@@ -9,7 +9,6 @@ import { Footer } from "@/components/Footer";
 import { CircularProgress, styled } from "@mui/material";
 import { Sidebar } from "@/components/Sidebar";
 import { FavouritesList } from "@/components/FavouritesList";
-import Comments from "@/components/CommentForm";
 import {Section, TrailerWrapper,} from "@/styles/MoviesDetails.styled";
 import { Container } from "@/styles/PopularMovies.styled";
 import { fetchSeriesDetails, resetSeriesDetails } from "@/app/store/Media/detailsSeriesSlice";
@@ -70,12 +69,10 @@ const SeriesDetails = () => {
               title={series.name}
               releaseDate={series.first_air_date}
               voteAverage={series.vote_average}
-              overview={series.overview}
-            />
+              overview={series.overview} id={0}            />
             <TrailerWrapper>
               <MoviesTrailer movieTitle={series.name} />
             </TrailerWrapper>
-            <Comments />
           </Container>
           <FavouritesList />
         </Section>
