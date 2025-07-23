@@ -6,6 +6,7 @@ import { PopularMovies } from "./PopularMovies";
 import styled from "styled-components";
 import { PopularSeries } from "./PopularSeries";
 import { SearchBar } from "./SearchBar";
+import { FavouritesList } from "./FavouritesList";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -84,8 +85,9 @@ export const Layout = () => {
           <PopularMovies />
           <PopularSeries />
         </ContentArea>
-        <RightSidebar>{/* <FavouritesList />  */}</RightSidebar>
-        {/* )} */}
+        <RightSidebar>
+          <FavouritesList />  
+        </RightSidebar>
       </MainGrid>
       <Footer />
     </PageWrapper>

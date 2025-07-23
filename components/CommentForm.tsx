@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { TextField, Button, Tooltip } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useSession } from 'next-auth/react';
+import { showErrorToast } from './ErrorToast';
 
 type Comment = {
   id: string;
@@ -51,6 +52,7 @@ const StyledButton = styled(Button)`
   color: white;
   border-radius: 9999px;
   font-weight: bold;
+  margin-top: 25px;
   padding: 8px 24px;
   &:hover { background: linear-gradient(to right, #fbbf24, #f59e0b); }
 `;
@@ -89,64 +91,75 @@ const NoComment = styled.p`
   font-style: italic;
 `;
 
+type CommentFormProps = {
+ id: string; 
+ username: string; 
+ text: string; 
+ rating: number; 
+ createdAt: string 
+};  
+
 export const CommentForm = ({ itemId, type }: Props) => {
   const { data: session } = useSession();
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState<Comment[]>([]);
 
-  // const fetchComments = async () => {
-  //   try {
-  //     const idToken = session?.user.idToken;
-  //     const res = await fetch(`/api/account/comments?itemId=${itemId}&type=${type}`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${idToken}`,
-  //       }
-  //     });
-  //     const data = await res.json();
-  //     setComments(data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch comments", error);
-  //   }
-  // };
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await fetch(`/api/account/comments?itemId=${itemId}&type=${type}`);
+        const data = await res.json();
+        if (res.ok) {
+          const formatted = data.map((c: CommentFormProps) => ({
+            id: c.id,
+            username: c.username,
+            text: c.text,
+            rating: c.rating,
+            date: new Date(c.createdAt).toLocaleDateString(),
+          }));
+          setComments(formatted);
+        } else {
+          console.error("Fetch error:", data.error);
+          console.log("Failed to fetch comments:", data);
+        }
+      } catch (err) {
+        console.error("Fetch failed:", err);
+      }
+    };
 
-  // useEffect(() => {
-  //   fetchComments();
-  // }, [ itemId, type ]);
+    fetchComments();
+  }, [itemId, type]);
 
   const handleSubmit = async () => {
     if (!text || rating === 0) return;
 
     if (!session?.user?.idToken) {
-      alert("You must be logged in to comment.");
+      showErrorToast("You must be logged in to comment.");
       return;
     }
 
     try {
-      const idToken = session.user.idToken;
-      const username = session.user.name || session.user.email || "User";
-
       const res = await fetch('/api/account/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${idToken}`,
+          'Authorization': `Bearer ${session.user.idToken}`,
         },
-        body: JSON.stringify({ text, rating, itemId, type, username }),
+        body: JSON.stringify({ text, rating, itemId, type }),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        console.error("Server error:", result.error);
-        alert(result.error || "Error submitting comment.");
+        showErrorToast(result.error || "Error submitting comment.");
         return;
       }
 
       setComments((prev) => [
         {
           id: result.id,
-          username,
+          username: session.user.name || session.user.email || "User",
           text,
           rating,
           date: new Date().toLocaleDateString(),
@@ -157,8 +170,7 @@ export const CommentForm = ({ itemId, type }: Props) => {
       setText('');
       setRating(0);
     } catch (error) {
-      console.error("Error submitting comment:", error);
-      alert("Failed to submit comment. Please try again later.");
+      showErrorToast(`Unexpected error. Please try again, ${error}`);
     }
   };
 
@@ -191,7 +203,7 @@ export const CommentForm = ({ itemId, type }: Props) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         sx={{
-          backgroundColor: '#2c2c2c',
+          backgroundColor: '#fff',
           borderRadius: '12px',
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#444',
@@ -216,7 +228,7 @@ export const CommentForm = ({ itemId, type }: Props) => {
           {comments.map((comment) => (
             <CommentItem key={comment.id}>
               <CommentHeader>
-                <strong>{comment.username}</strong> <span>({comment.date} | {comment.rating}/10)</span>
+                <strong>{comment.username}</strong> ({comment.date} | {comment.rating}/10)
               </CommentHeader>
               <CommentText>{comment.text}</CommentText>
             </CommentItem>

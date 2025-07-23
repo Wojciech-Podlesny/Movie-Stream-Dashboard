@@ -6,7 +6,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Movie } from "@/types";
 
-// 🔧 Globalny styl nadpisujący domyślne style Swiper
 const GlobalSwiperFix = createGlobalStyle`
   .swiper {
     width: 100%;
@@ -24,11 +23,11 @@ const GlobalSwiperFix = createGlobalStyle`
   }
 
   .swiper-button-prev {
-    left: calc((100% - 80%) / 7 - 40px); /* Poza slajdami po lewej */
+    left: calc((100% - 80%) / 7 - 40px); 
   }
 
   .swiper-button-next {
-    right: calc((100% - 80%) / 6 - 40px); /* Poza slajdami po prawej */
+    right: calc((100% - 80%) / 6 - 40px); 
   }
 
   .swiper-button-prev::after,
@@ -44,7 +43,6 @@ const GlobalSwiperFix = createGlobalStyle`
   }
 `;
 
-// 🧱 Styl otaczający cały komponent (dla szerokości i pozycji)
 const OuterWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -52,18 +50,18 @@ const OuterWrapper = styled.div`
   justify-content: center;
 `;
 
-// 🎞️ Kontener dla samej karuzeli
+
 const InnerCarouselWrapper = styled.div`
   width:80%;
   position: relative;
 `;
 
-// 🖼️ Styl slajdu
+
 const SlideWrapper = styled.div`
   width: 90%;
 `;
 
-// 🖼️ Styl plakatu
+
 const MoviePoster = styled.img`
   width: 100%;
   border-radius: 10px;

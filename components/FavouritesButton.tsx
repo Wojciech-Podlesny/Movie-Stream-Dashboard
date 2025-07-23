@@ -5,6 +5,7 @@ import { Button, Tooltip } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useSession } from "next-auth/react";
+import { showErrorToast } from "./ErrorToast";
 
 interface FavoriteButtonProps {
   itemId: string;
@@ -45,7 +46,7 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
   }, [session?.user?.idToken, itemId]);
 
   const handleToggleFavorite = async () => {
-    if (!session?.user?.idToken) return alert("You must be logged in.");
+    if (!session?.user?.idToken) return showErrorToast("You must be logged in.");
     setLoading(true);
 
     try {
@@ -66,7 +67,7 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
       setIsFavorite((prev) => !prev);
     } catch (err) {
       console.error("Error toggling favorite:", err);
-      alert("Something went wrong. Try again.");
+      showErrorToast("Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }

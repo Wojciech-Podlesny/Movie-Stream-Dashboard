@@ -1,6 +1,5 @@
 import { cert, getApps, initializeApp, App, ServiceAccount } from "firebase-admin/app";
 
-
 const serviceAccount: ServiceAccount = {
   projectId: process.env.FIREBASE_PROJECT_ID,
   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
@@ -16,5 +15,4 @@ export function getAdminApp(): App {
     credential: cert(serviceAccount as ServiceAccount),
   });
 }
-
 

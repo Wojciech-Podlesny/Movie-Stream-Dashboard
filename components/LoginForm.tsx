@@ -15,6 +15,7 @@ import {
   type LoginFormData,
 } from "@/lib/validation/user-validation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 export const LoginForm = () => {
@@ -22,10 +23,11 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
   });
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     setLoginError(null);
@@ -39,7 +41,7 @@ export const LoginForm = () => {
     if (result?.error) {
       setLoginError("Invalid email or password");
     } else {
-      window.location.href = "/";
+      router.push("/")
     }
   };
 
@@ -95,7 +97,7 @@ export const LoginForm = () => {
         <Button
           type="submit"
           variant="contained"
-          
+          disabled={isSubmitting}
           fullWidth
           sx={{
             py: "0.75rem",
@@ -108,7 +110,7 @@ export const LoginForm = () => {
           Sign in
         </Button>
           <Button
-          type="submit"
+          type="button"
           variant="contained"
           onClick={handleGoogleLogin}
           fullWidth

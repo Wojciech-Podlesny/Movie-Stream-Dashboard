@@ -20,13 +20,15 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { useRouter } from "next/navigation";
+import { showErrorToast, showSuccessToast } from "./ErrorToast";
 
 export const RegisterForm = () => {
   const router = useRouter();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(RegisterSchema),
   });
@@ -52,12 +54,13 @@ export const RegisterForm = () => {
 
       if (auth.currentUser) {
         await sendEmailVerification(auth.currentUser);
-        alert("Verification email sent. Please check your inbox.");
+        showSuccessToast("Verification email sent. Please check your inbox.");
       }
+      reset();
       router.push("/login");
     } catch (error) {
-      console.log("Register error:", error);
-      alert(error instanceof Error ? error.message : "Registration failed");
+      console.error("Register error:", error);
+      showErrorToast(error instanceof Error ? error.message : "Registration failed");
       router.push("/register")
     }
   };
@@ -116,6 +119,7 @@ export const RegisterForm = () => {
         />
         <Button
           type="submit"
+          disabled={isSubmitting}
           variant="contained"
           fullWidth
           sx={{

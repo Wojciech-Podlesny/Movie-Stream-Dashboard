@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { styled } from "styled-components";
@@ -58,7 +59,6 @@ const PosterOverlay = styled.div`
   top: 0;
   left: 0;
   padding: 8px;
-
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -96,6 +96,13 @@ const ShowMoreWrapper = styled.div`
   margin-top: 20px;
 `;
 
+const TopRightIconWrapper = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+`;
+
 export const MoviesGrid = ({ movies }: Props) => {
   const [showAll, setShowAll] = useState(false);
   const visibleMovies = showAll ? movies : movies.slice(0, 5);
@@ -118,16 +125,19 @@ export const MoviesGrid = ({ movies }: Props) => {
                 <Rating>{movie.vote_average?.toFixed(1)} ⭐</Rating>
               </PosterOverlay>
             </Link>
-            <FavouritesButton
-              itemId={movie.id.toString()}
-              type="movie"
-              data={{
-                title: movie.title,
-                poster_path: movie.poster_path,
-                releaseDate: movie.releaseDate,
-                vote_average: movie.vote_average,
-              }}
-            />
+
+            <TopRightIconWrapper>
+              <FavouritesButton
+                itemId={movie.id.toString()}
+                type="movie"
+                data={{
+                  title: movie.title,
+                  poster_path: movie.poster_path,
+                  releaseDate: movie.releaseDate,
+                  vote_average: movie.vote_average,
+                }}
+              />
+            </TopRightIconWrapper>
           </PosterWrapper>
         </Card>
       ))}

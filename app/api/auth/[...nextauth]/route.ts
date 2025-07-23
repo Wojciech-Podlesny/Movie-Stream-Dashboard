@@ -19,6 +19,12 @@ const handler = NextAuth({
       
       async authorize(credentials) {
         try {
+
+        if (!credentials?.email || !credentials?.password) {
+        throw new Error("Email and password are required.");
+        }
+
+
           const res = await fetch(
             `${process.env.NEXT_AUTH_URL}/api/auth/login`,
             {

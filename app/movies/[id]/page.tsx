@@ -14,32 +14,26 @@ import {
   resetMoviesDetails,
 } from "@/app/store/Media/detailsMoviesSlice";
 import { renderError, renderLoading } from "@/utils/renderError";
-
-
 import { styled } from "styled-components";
 import { CommentForm } from "@/components/CommentForm";
 
-
- const SectionMovies = styled("div")`
+const SectionMovies = styled("div")`
   display: flex;
   justify-content: center;
 `;
 
- const Section = styled.div`
+const Section = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
- const TrailerWrapper = styled.div`
+const TrailerWrapper = styled.div`
   margin-top: 40px;
 `;
 
-
-
-const MovieDetails = ({ params }: { params: { id: string } }) => {
+const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
-
   const dispatch = useDispatch<AppDispatch>();
   const { movie, loading, error } = useSelector(
     (state: RootState) => state.moviesDetails
@@ -75,10 +69,9 @@ const MovieDetails = ({ params }: { params: { id: string } }) => {
             <TrailerWrapper>
               <MoviesTrailer movieTitle={movie.title} />
             </TrailerWrapper>
-               <CommentForm itemId={params.id} type="movie" />
+            <CommentForm itemId={id} type="movie" />
           </Container>
         </Section>
-
       </SectionMovies>
       <Footer />
     </>

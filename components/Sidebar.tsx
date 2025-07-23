@@ -150,20 +150,6 @@ export const Sidebar = () => {
   if (error) return <CategoriesContainer>{error}</CategoriesContainer>;
 
 
-  // const handleClickCategories = () => {
-  //   dispatch(clearSelectedCategories())
-  // }
-
-  //   const handleClickCategories = (genre: Genre) => {
-  //     if(type === "movie") {
-  //       dispatch(setSelectedMovieCategory(genre))
-  //     } else {
-  //       dispatch(setSelectedSeriesCateogory(genre))
-  //     }
-  //    }
-  
-  
-
   return (
     <>
       {!openSidebar && (

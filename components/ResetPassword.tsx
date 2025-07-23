@@ -15,7 +15,7 @@ export const ResetPassword = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(ForgotPasswordSchema),
   });
@@ -32,17 +32,6 @@ export const ResetPassword = () => {
     
     }
   };
-
-  //   const handleReset = async () => {
-  //   const res = await fetch('/api/account/reset-password', {
-  //     method: 'POST',
-  //     body: JSON.stringify({ email }),
-  //   });
-  //   const data = await res.json();
-  //   if (res.ok) alert('Link do resetu hasła wysłany!');
-  //   else alert(data.error);
-  // };
-
 
   return (
     <Box
@@ -76,6 +65,7 @@ export const ResetPassword = () => {
       <Button
         type="submit"
         variant="contained"
+        disabled={isSubmitting}
         fullWidth
         sx={{
           py: "0.75rem",
@@ -108,3 +98,4 @@ export const ResetPassword = () => {
     </Box>
   );
 };
+
