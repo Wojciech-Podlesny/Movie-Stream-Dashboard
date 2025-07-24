@@ -41,8 +41,8 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ id: docRef.id });
-  } catch (err) {
-    console.error("Error submitting comment:", err);
+  } catch (error) {
+    console.error("Error submitting comment:", error);
     return NextResponse.json({ error: "Invalid or expired token." }, { status: 403 });
   }
 }

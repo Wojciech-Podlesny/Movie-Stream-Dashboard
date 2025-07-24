@@ -1,12 +1,12 @@
 import { FormControl, MenuItem, Select } from "@mui/material";
 
-type Props = {
+type MediaSortSelectProps = {                          //to other files
   sortDirection: "asc" | "desc";
   setFilter: (val: string) => void;
   setSortDirection: (val: "asc" | "desc") => void;
 };
 
-export const MediaSortSelect = ({ sortDirection, setFilter, setSortDirection }: Props) => (
+export const MediaSortSelect = ({ sortDirection, setFilter, setSortDirection }: MediaSortSelectProps) => (
 <FormControl
   variant="outlined"
   sx={{

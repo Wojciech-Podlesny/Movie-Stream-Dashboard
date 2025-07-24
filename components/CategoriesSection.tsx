@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 
-const SectionHeader = styled.div`
+const SectionHeader = styled.div`           
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -80,11 +80,7 @@ export const CategoriesSection = ({title,icon: Icon,categories,isOpen,setIsOpen,
       dispatch(setSelectedSeriesCateogory(genre))
     }
    }
-
-
-
-
-
+   
   return (
     <>
       <SectionHeader

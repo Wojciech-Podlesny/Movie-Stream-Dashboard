@@ -30,6 +30,7 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+    //walidacja hasła ,username,confirm password
 
     const auth = getAuth(getAdminApp());
     const db = getFirestore(getAdminApp());
@@ -37,7 +38,7 @@ export async function POST(req: Request) {
     const userRecord = await auth.createUser({
       email,
       password,
-      displayName: username,
+      displayName: username, //spojne nazwy
       emailVerified: true,
     });
 
@@ -57,10 +58,15 @@ export async function POST(req: Request) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {                                                //catch typowanych bledow
     console.error("Registration error:", error);
 
-    if (error.code === "auth/email-already-exists") {
+    if (
+      typeof error === "object" &&                                        
+      error !== null &&
+      "code" in error &&
+      (error as { code?: string }).code === "auth/email-already-exists"
+    ) {
       return NextResponse.json(
         { error: "A user with this email already exists." },
         { status: 409 } 

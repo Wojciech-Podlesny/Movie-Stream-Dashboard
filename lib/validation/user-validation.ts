@@ -29,3 +29,18 @@ export const ForgotPasswordSchema = z.object({
 
 
 export type ForgotPasswordFormData = z.infer<typeof ForgotPasswordSchema>;
+
+
+export const accountFormSchema = z
+  .object({
+    displayName: z.string().min(1, "Display name is required"),
+    currentPassword: z.string().min(6, "Current password is required"),
+    newPassword: z.string().min(6, "New password must be at least 6 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export type AccountFormData = z.infer<typeof accountFormSchema>;

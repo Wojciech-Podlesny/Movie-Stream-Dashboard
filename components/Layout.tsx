@@ -7,8 +7,9 @@ import styled from "styled-components";
 import { PopularSeries } from "./PopularSeries";
 import { SearchBar } from "./SearchBar";
 import { FavouritesList } from "./FavouritesList";
+import { NowPlayingMovies } from "./NowPlayingMovies";
 
-const PageWrapper = styled.div`
+const PageWrapper = styled.div` //styles to other files
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -84,6 +85,7 @@ export const Layout = () => {
           </Section>
           <PopularMovies />
           <PopularSeries />
+          <NowPlayingMovies />
         </ContentArea>
         <RightSidebar>
           <FavouritesList />  

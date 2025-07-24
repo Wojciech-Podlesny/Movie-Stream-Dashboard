@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip } from "@mui/material";
+import { FavouriteItem } from "@/types/favourites";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,12 +57,6 @@ const RemoveButton = styled.button`
   align-items: center;
   justify-content: center;
 `;
-
-  type FavouriteItem = {
-    itemId: string;
-    poster_path: string;
-    title: string;
-  };
 
 
 export const FavouritesList = () => {

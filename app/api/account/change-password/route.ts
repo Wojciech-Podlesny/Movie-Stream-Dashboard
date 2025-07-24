@@ -24,9 +24,13 @@ export async function POST(req: Request) {
 
     await adminAuth.updateUser(uid, { password: newPassword });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true });                                 
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 400 });
   }
+}
+
+export async function GET() {
+  return NextResponse.json({error: "Method Not Allowed"}, {status: 405})
 }

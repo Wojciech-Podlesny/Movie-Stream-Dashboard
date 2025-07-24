@@ -8,7 +8,7 @@ import { MediaShowAllButton } from "./MediaShowAllButton";
 import { Movie } from "@/types";
 import { FavouritesButton } from "./FavouritesButton";
 
-type Props = {
+type MoviesProps = {    //to toher files
   movies: Movie[];
 };
 
@@ -103,7 +103,7 @@ const TopRightIconWrapper = styled.div`
   z-index: 5;
 `;
 
-export const MoviesGrid = ({ movies }: Props) => {
+export const MoviesGrid = ({ movies }: MoviesProps) => {
   const [showAll, setShowAll] = useState(false);
   const visibleMovies = showAll ? movies : movies.slice(0, 5);
 

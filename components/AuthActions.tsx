@@ -1,19 +1,10 @@
 import Link from "next/link";
 import { Button } from "@mui/material";
 import { UserAvatar } from "./UserAvatar";
+import { authProps } from "@/types/auth";
 
-interface Props {
-  session: {
-    user?: {
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
-  } | null;
-  onAvatarClick: () => void;
-}
 
-export const AuthActions = ({ session, onAvatarClick }: Props) => {
+export const AuthActions = ({ session, onAvatarClick }: authProps) => {
   if (!session?.user) {
     return (
       <>

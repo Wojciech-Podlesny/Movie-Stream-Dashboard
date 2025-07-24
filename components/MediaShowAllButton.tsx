@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { styled } from "styled-components";
 
-type Props = {
+type MediaShowButtonProps = {  //to other files
   showAll: boolean;
   toggleShowAll: () => void;
 };
@@ -30,7 +30,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-export const MediaShowAllButton = ({ showAll, toggleShowAll }: Props) => (
+export const MediaShowAllButton = ({ showAll, toggleShowAll }: MediaShowButtonProps) => (
   <StyledButton onClick={toggleShowAll}>
     {showAll ? "Show Less" : "Show More"}
   </StyledButton>

@@ -1,16 +1,14 @@
 import { Button, Stack } from "@mui/material";
-// import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-// import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useState } from "react";
 
 
-type Props = {
+type MediaFilterButtonsProps = {  //to other files
   sortDirection: "asc" | "desc";
   setFilter: (val: string) => void;
   setSortDirection: (val: "asc" | "desc") => void;
 }
 
-export const MediaFilterButtons = ({ sortDirection, setFilter, setSortDirection }: Props) => {
+export const MediaFilterButtons = ({ sortDirection, setFilter, setSortDirection }: MediaFilterButtonsProps) => {
   const [activeFilter, setActiveFilter] = useState<string>("");
 
   const handleClick = (filter: string, toggleSort = false) => {
@@ -59,13 +57,6 @@ export const MediaFilterButtons = ({ sortDirection, setFilter, setSortDirection 
         variant={isActive("year") ? "contained" : "outlined"}
         color="primary"
         onClick={() => handleClick("year")}
-        // endIcon={
-        //   isActive("year")
-        //     ? sortDirection === "asc"
-        //       ? <ArrowUpwardIcon fontSize="small" />
-        //       : <ArrowDownwardIcon fontSize="small" />
-        //     : null
-        // }
       >
         Year
       </Button>

@@ -1,16 +1,10 @@
 "use client";
+import { AccountDrawerProps } from "@/types/account";
 import { Drawer, Button, Box } from "@mui/material";
 import Link from "next/link";
 
-export const AccountDrawer = ({
-  open,
-  onClose,
-  handleLogout,
-}: {
-  open: boolean;
-  onClose: () => void;
-  handleLogout: () => void;
-}) => (
+
+export const AccountDrawer = ({open,onClose, handleLogout}: AccountDrawerProps) => (
   <Drawer
     anchor="right"
     open={open}

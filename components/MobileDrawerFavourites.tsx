@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Drawer, IconButton, Tooltip } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { FavouritesList } from "./FavouritesList"; // ten, który zrobiliśmy wcześniej
+import { FavouritesList } from "./FavouritesList";
 
 export const MobileDrawerFavourites = () => {
   const [open, setOpen] = useState(false);

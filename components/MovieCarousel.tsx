@@ -74,7 +74,7 @@ const MoviePoster = styled.img`
 `;
 
 
-type MovieCarouselProps = {
+type MovieCarouselProps = {  //to other files
   movies: Movie[];
 };
 

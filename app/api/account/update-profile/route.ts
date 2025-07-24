@@ -25,13 +25,15 @@ export async function POST(req: Request) {
     await adminAuth.updateUser(uid, { displayName });
 
     return NextResponse.json({ success: true });
-  } catch (err) {
+  } catch (error) {
     let errorMessage = "Error during profile update.";
 
-    if (err instanceof Error) {
-      errorMessage = err.message;
+    if (error instanceof Error) {
+      errorMessage = error.message;
     }
 
     return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
+
+

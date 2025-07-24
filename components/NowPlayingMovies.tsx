@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 import styled from "styled-components";
 import { MovieCarousel } from "./MovieCarousel";
 
-const Section = styled.div`
+const Section = styled.div`   //to other files
  border-bottom: 1px solid white;
  @media (max-width: 768px) {
     display: none;
@@ -44,7 +44,7 @@ export const NowPlayingMovies = () => {
   if (loading) {
     return (
       <Container>
-        Loading now playing movies... <CircularProgress />
+        Loading... <CircularProgress />
       </Container>
     );
   }

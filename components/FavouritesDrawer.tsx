@@ -2,9 +2,11 @@
 import { Drawer, IconButton, Box } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { FavouritesList } from "./FavouritesList";
+import { favouritesDrawerProps } from "@/types/favourites";
 
 
-export const FavouritesDrawer = ({ open, onClose }: { open: boolean; onClose: () => void }) => (
+
+export const FavouritesDrawer = ({ open, onClose }: favouritesDrawerProps) => (
   <Drawer
     anchor="right"
     open={open}

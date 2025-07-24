@@ -10,27 +10,13 @@ import {
   Divider,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getAuth} from "firebase/auth";
 import { app } from "@/lib/firebase/firebase";
 import { getSession } from "next-auth/react";
 import { showErrorToast } from "./ErrorToast";
 import { useRouter } from "next/navigation";
-
-const schema = z
-  .object({
-    displayName: z.string().min(1, "Display name is required"),
-    currentPassword: z.string().min(6, "Current password is required"),
-    newPassword: z.string().min(6, "New password must be at least 6 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
-type FormData = z.infer<typeof schema>;
+import { AccountFormData,accountFormSchema } from "@/lib/validation/user-validation";
 
 export const AccountForm = () => {
   const auth = getAuth(app);
@@ -42,15 +28,16 @@ export const AccountForm = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-    setValue,
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  });
+ const {
+  register,
+  handleSubmit,
+  formState: { errors, isSubmitting },
+  reset,
+  setValue,
+} = useForm<AccountFormData>({
+  resolver: zodResolver(accountFormSchema),
+});
+
 
   useEffect(() => {
     getSession().then((s) => setSession(s));
@@ -65,13 +52,13 @@ export const AccountForm = () => {
 }, [session, setValue]);
 
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: AccountFormData) => {
     try {
       if (!session?.user?.idToken) {
         throw new Error("Session is not loaded or invalid.");
       }
 
-      const res1 = await fetch("/api/account/update-profile", {
+      const responseUpdate = await fetch("/api/account/update-profile", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session.user.idToken}`,
@@ -80,7 +67,7 @@ export const AccountForm = () => {
         body: JSON.stringify({ displayName: data.displayName }),
       });
 
-      const res2 = await fetch("/api/account/change-password", {
+      const responseChange = await fetch("/api/account/change-password", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session.user.idToken}`,
@@ -91,10 +78,10 @@ export const AccountForm = () => {
         }),
       });
 
-      const r1 = await res1.json();
-      const r2 = await res2.json();
+      const r1 = await responseUpdate.json();
+      const r2 = await responseChange.json();
 
-      if (!res1.ok || !res2.ok) {
+      if (!responseUpdate.ok || !responseChange.ok) {
         throw new Error(r1.error || r2.error || "An error occurred");
       }
 

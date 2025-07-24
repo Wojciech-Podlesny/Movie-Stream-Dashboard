@@ -23,3 +23,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" }, { status: 400 });
   }
 }
+
+//dodac console errory po stronie serwera
+//Delete zamiast Post

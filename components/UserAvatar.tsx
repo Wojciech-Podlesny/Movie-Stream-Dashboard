@@ -1,13 +1,13 @@
 "use client";
 import { Avatar, IconButton } from "@mui/material";
 
-interface User {
+interface User {   // to other files
   name?: string;
   email?: string;
   image?: string;
 }
 
-interface UserAvatarProps {
+interface UserAvatarProps {   //to toher files
   user: User;
   onClick: () => void;
 }

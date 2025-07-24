@@ -38,12 +38,12 @@ const FilterButton = styled.button<{ active?: boolean }>`
   }
 `;
 
-type Props = {
+type MediaFilterMenuProps = {          //to other files
   setFilter: (value: string) => void;
   setSortDirection: (dir: "asc" | "desc") => void;
 };
 
-export const MoviesFilterMenu = ({ setFilter, setSortDirection }: Props) => {
+export const MoviesFilterMenu = ({ setFilter, setSortDirection }: MediaFilterMenuProps) => {
   const [sortDirectionLocal, setSortDirectionLocal] = useState<"asc" | "desc">("asc");
   const [activeFilter, setActiveFilter] = useState<string>("");
 
@@ -59,7 +59,6 @@ export const MoviesFilterMenu = ({ setFilter, setSortDirection }: Props) => {
     if (toggleSort) toggleSortDirection();
   };
 
-  // const SortIcon = sortDirectionLocal === "asc" ? <ArrowUpwardIcon fontSize="small" /> : <ArrowDownwardIcon fontSize="small" />;
 
   return (
     <SectionTitle>

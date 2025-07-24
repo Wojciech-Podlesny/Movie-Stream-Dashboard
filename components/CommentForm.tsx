@@ -6,19 +6,8 @@ import { TextField, Button, Tooltip } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useSession } from 'next-auth/react';
 import { showErrorToast } from './ErrorToast';
+import { CommentSectionProps,Comment } from '@/types/comments';
 
-type Comment = {
-  id: string;
-  username: string;
-  date: string;
-  text: string;
-  rating: number;
-};
-
-type Props = {
-  itemId: string;
-  type: 'movie' | 'series';
-};
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(15px); }
@@ -91,15 +80,7 @@ const NoComment = styled.p`
   font-style: italic;
 `;
 
-type CommentFormProps = {
- id: string; 
- username: string; 
- text: string; 
- rating: number; 
- createdAt: string 
-};  
-
-export const CommentForm = ({ itemId, type }: Props) => {
+export const CommentForm = ({ itemId, type }: CommentSectionProps) => {
   const { data: session } = useSession();
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
@@ -111,7 +92,7 @@ export const CommentForm = ({ itemId, type }: Props) => {
         const res = await fetch(`/api/account/comments?itemId=${itemId}&type=${type}`);
         const data = await res.json();
         if (res.ok) {
-          const formatted = data.map((c: CommentFormProps) => ({
+          const formatted = data.map((c) => ({
             id: c.id,
             username: c.username,
             text: c.text,

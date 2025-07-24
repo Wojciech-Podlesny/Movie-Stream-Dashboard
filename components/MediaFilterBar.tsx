@@ -100,7 +100,7 @@ const DesktopSectionMenu = styled.div`
   }
 `;
 
-type Props = {
+type MediaFilterProps = {    //to other files
   filter: string;
   sortDirection: "asc" | "desc";
   setFilter: (val: string) => void;
@@ -109,11 +109,7 @@ type Props = {
   toggleShowAll: () => void;
 };
 
-export const MediaFilterBar = ({
-  sortDirection,
-  setFilter,
-  setSortDirection,
-}: Props) => {
+export const MediaFilterBar = ({sortDirection,setFilter,setSortDirection}: MediaFilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

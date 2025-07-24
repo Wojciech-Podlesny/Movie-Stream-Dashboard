@@ -9,7 +9,7 @@ import { fetchHomeContentInitial } from "@/app/store/Media/homeContentSlice";
 
 import { styled } from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.div`  //to other files
   width: 100%;
   color: #fff;
   background-color: #0d0d2f;
@@ -47,7 +47,7 @@ export const PopularMovies = () => {
     return (
       <Container>
         {" "}
-        Loading movies <CircularProgress />{" "}
+        Loading... <CircularProgress />{" "}
       </Container>
     );
 

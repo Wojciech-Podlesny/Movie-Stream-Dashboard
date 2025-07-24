@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 
-interface MobileMenuDrawerProps {
+interface MobileMenuDrawerProps { //to other files
   open: boolean;
   onClose: () => void;
   session: {

@@ -118,8 +118,8 @@ const ReadMore = ({ text }: { text: string }) => {
   );
 };
 
-// Typy propsów
-type Props = {
+
+type MoviesHeaderProps = { //to other files
   id: number;
   posterPath: string;
   title: string;
@@ -128,15 +128,8 @@ type Props = {
   overview: string;
 };
 
-// Główny komponent
-export const MoviesHeader = ({
-  id,
-  posterPath,
-  title,
-  releaseDate,
-  voteAverage,
-  overview,
-}: Props) => (
+
+export const MoviesHeader = ({id,posterPath,title,releaseDate,voteAverage,overview}: MoviesHeaderProps) => (
   <DetailsLayout>
     <PosterWrapper>
       <Image

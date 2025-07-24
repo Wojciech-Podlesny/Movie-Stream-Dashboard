@@ -3,11 +3,11 @@ import { fetchTrailer, resetTrailerState } from "@/app/store/Media/trailerSlice"
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { styled } from "styled-components";
 
-type MovieTrailerProps = {
+type MovieTrailerProps = { //to other files
   movieTitle: string;
 };
 
-const Container = styled.div`
+const Container = styled.div`   //to toher files
   background-color: #121212;
   padding: 2rem;
   margin: 40px auto;
