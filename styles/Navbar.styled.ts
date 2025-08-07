@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const NavbarContainer = styled.div`  //to other files
+export const NavbarContainer = styled.div`
   background-color: rgba(13, 13, 29, 0.8);
   backdrop-filter: blur(6px);
   display: flex;

@@ -2,62 +2,38 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import styled from "styled-components";
-import Image from "next/image";
+import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
-import { Tooltip } from "@mui/material";
+import { Tooltip, Button } from "@mui/material";
 import { FavouriteItem } from "@/types/favourites";
+import styled from "styled-components";
+import {
+  FavoritesHeading,
+  FavoritesGrid,
+  FavoriteItem,
+  FavoritePoster,
+  RemoveFavoriteButton,
+  FavoritesWrapper,
+} from "@/styles/FavouritesList.styled";
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: #0d0d1d;
-  padding: 40px 20px;
-`;
-
-const List = styled.div`
-  max-width: 1200px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px;
-`;
-
-const Heading = styled.h2`
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  grid-column: 1 / -1;
-  text-align: center;
-`;
-
-const MovieItem = styled.div`
-  position: relative;
+const NotLoggedBox = styled.div`
   color: white;
   text-align: center;
+  border-radius: 12px;
+  padding: 24px 16px;
+  max-width: 400px;
+  margin: 0 auto;
 `;
 
-const Poster = styled(Image)`
-  border-radius: 8px;
-  object-fit: cover;
+const NotLoggedText = styled.p`
+  margin-bottom: 12px;
 `;
 
-const RemoveButton = styled.button`
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background-color: rgba(255, 0, 0, 0.8);
-  border: none;
-  border-radius: 50%;
-  color: white;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
+const NotLoggedButtons = styled.div`
   display: flex;
-  align-items: center;
+  gap: 12px;
   justify-content: center;
 `;
-
 
 export const FavouritesList = () => {
   const { data: session, status } = useSession();
@@ -94,36 +70,61 @@ export const FavouritesList = () => {
   };
 
   if (status !== "authenticated") {
-    return <p style={{ color: "white", textAlign: "center" }}>Login</p>;
+    return (
+      <FavoritesWrapper>
+        <NotLoggedBox>
+          <NotLoggedText>
+            Sign in or <strong>sign up</strong> to add items to your favourites.
+          </NotLoggedText>
+          <NotLoggedButtons>
+            <Link href="/register" passHref>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#fff",
+                  color: "#0d0d1d",
+                  fontWeight: 600,
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0",
+                  },
+                }}
+              >
+                Register
+              </Button>
+            </Link>
+          </NotLoggedButtons>
+        </NotLoggedBox>
+      </FavoritesWrapper>
+    );
   }
 
   return (
-    <Wrapper>
-      <List>
-        <Heading>Your favourites</Heading>
+    <FavoritesWrapper>
+      <FavoritesGrid>
+        <FavoritesHeading>Your favourites</FavoritesHeading>
         {favourites.length === 0 ? (
           <p style={{ color: "gray", gridColumn: "1 / -1", textAlign: "center" }}>
             No favourites added yet.
           </p>
         ) : (
           favourites.map((item) => (
-            <MovieItem key={item.itemId}>
-              <Tooltip title="Usuń">
-                <RemoveButton onClick={() => handleRemove(item.itemId)}>
+            <FavoriteItem key={item.itemId}>
+              <Tooltip title="Remove">
+                <RemoveFavoriteButton onClick={() => handleRemove(item.itemId)}>
                   <CloseIcon fontSize="small" />
-                </RemoveButton>
+                </RemoveFavoriteButton>
               </Tooltip>
-              <Poster
+              <FavoritePoster
                 src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
                 alt={item.title}
                 width={100}
                 height={150}
               />
               <p>{item.title}</p>
-            </MovieItem>
+            </FavoriteItem>
           ))
         )}
-      </List>
-    </Wrapper>
+      </FavoritesGrid>
+    </FavoritesWrapper>
   );
 };

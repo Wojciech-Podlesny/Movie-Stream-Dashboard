@@ -8,19 +8,18 @@ import { MoviesGrid } from "./MoviesGrid";
 import { fetchHomeContentInitial } from "@/app/store/Media/homeContentSlice";
 
 import { styled } from "styled-components";
+import { MediaHeaderTitle } from "./MediaHeaderTitle";
 
-export const Container = styled.div`  //to other files
+ const PopularMediaWrapper = styled.div`
   width: 100%;
   color: #fff;
   background-color: #0d0d2f;
   border-bottom: 1px solid white;
 
-
   @media (max-width: 480px) {
     padding: 0 6px;
   }
 `;
-
 
 export const PopularMovies = () => {
   const { error, loading, popularMovies } = useSelector((state: RootState) => state.home);
@@ -39,22 +38,19 @@ export const PopularMovies = () => {
   const filteredMovies = getFilteredMovies(popularMovies, selectedMovieCategory, query);
   const sortedMovies = getSortedMovies(filteredMovies, filter, sortDirection);
 
-  // const displayMoreMovies = showAllMovies
-  //   ? sortedMovies
-  //   : sortedMovies.slice(0, 5);
-
   if (loading)
     return (
-      <Container>
+      <PopularMediaWrapper>
         {" "}
-        Loading... <CircularProgress />{" "}
-      </Container>
+        <CircularProgress />{" "}
+      </PopularMediaWrapper>
     );
 
-  if (error) return <Container>{error}</Container>;
+  if (error) return <PopularMediaWrapper>{error}</PopularMediaWrapper>;
 
   return (
-    <Container>
+    <PopularMediaWrapper>
+      <MediaHeaderTitle type={"movies"}  />
       <MediaFilterBar
         filter={filter}
         sortDirection={sortDirection}
@@ -65,7 +61,7 @@ export const PopularMovies = () => {
       />
       <MoviesGrid movies={sortedMovies} />
     
-    </Container>
+    </PopularMediaWrapper>
   );
 };
 

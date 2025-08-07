@@ -8,8 +8,6 @@ import { useSession } from "next-auth/react";
 import { showErrorToast } from "./ErrorToast";
 import { FavoriteButtonProps } from "@/types/favourites";
 
-
-
 export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) => {
   const { data: session } = useSession();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -29,11 +27,7 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
         if (!responseAccount.ok) throw new Error("Failed to fetch favorites");
         const favorites: Array<{ itemId: string }> = await responseAccount.json();
 
-        const found = favorites.some(
-          (fav) => fav.itemId === itemId
-        );
-
-        setIsFavorite(found);
+        setIsFavorite(favorites.some((fav) => fav.itemId === itemId));
       } catch (error) {
         console.error("Error loading favorites:", error);
       }
@@ -43,7 +37,9 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
   }, [session?.user?.idToken, itemId]);
 
   const handleToggleFavorite = async () => {
-    if (!session?.user?.idToken) return showErrorToast("You must be logged in.");
+    if (!session?.user?.idToken) {
+      return showErrorToast("You must be logged in.");
+    }
     setLoading(true);
 
     try {
@@ -61,6 +57,7 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
         throw new Error(error || "Unknown error");
       }
 
+      // natychmiastowa zmiana UI
       setIsFavorite((prev) => !prev);
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -71,18 +68,21 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
   };
 
   return (
-    <Tooltip title={isFavorite ? "Add to favourites" : "Delete from favourites"}>
+    <Tooltip title={isFavorite ? "Remove from favourites" : "Add to favourites"}>
       <Button
         onClick={handleToggleFavorite}
         disabled={loading}
-        color={isFavorite ? "error" : "primary"}
         sx={{
           minWidth: "auto",
           padding: "6px",
           borderRadius: "50%",
         }}
       >
-        {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        {isFavorite ? (
+          <FavoriteIcon sx={{ color: "red" }} /> // czerwone wypełnione
+        ) : (
+          <FavoriteBorderIcon sx={{ color: "white" }} /> // puste białe
+        )}
       </Button>
     </Tooltip>
   );

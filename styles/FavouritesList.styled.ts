@@ -1,14 +1,14 @@
 import { styled } from "styled-components";
 import Image from "next/image";
 
-export const Wrapper = styled.div`
+export const FavoritesWrapper = styled.div`
   display: flex;
   justify-content: center;
   background-color: #0d0d1d;
   padding: 40px 20px;
 `;
 
-export const List = styled.div`
+export const FavoritesGrid = styled.div`
   max-width: 1200px;
   width: 100%;
   display: grid;
@@ -16,7 +16,7 @@ export const List = styled.div`
   gap: 20px;
 `;
 
-export const Heading = styled.h2`
+export const FavoritesHeading = styled.h2`
   color: white;
   font-size: 24px;
   font-weight: bold;
@@ -24,18 +24,18 @@ export const Heading = styled.h2`
   text-align: center;
 `;
 
-export const MovieItem = styled.div`
+export const FavoriteItem = styled.div`
   position: relative;
   color: white;
   text-align: center;
 `;
 
-export const Poster = styled(Image)`
+export const FavoritePoster = styled(Image)`
   border-radius: 8px;
   object-fit: cover;
 `;
 
-export const RemoveButton = styled.button`
+export const RemoveFavoriteButton = styled.button`
   position: absolute;
   top: 6px;
   right: 6px;
@@ -50,4 +50,3 @@ export const RemoveButton = styled.button`
   align-items: center;
   justify-content: center;
 `;
-

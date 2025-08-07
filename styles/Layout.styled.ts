@@ -26,6 +26,8 @@ export const LeftSidebar = styled.aside`
   background: #0d0d1d;
   z-index: 998;
   width: 80px;
+  height: 10vh;
+  border-bottom-right-radius: 70px;
 
   @media (max-width: 768px) {
     display: none;

@@ -7,32 +7,30 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { CircularProgress } from "@mui/material";
 import { getFilteredMovies, getSortedMovies } from "@/utils/filterMovies";
-import { MoviesFilterMenu } from "@/components/MediaFilterMenu";
 import { MoviesGrid } from "@/components/MoviesGrid";
 import { MoviesPagination } from "@/components/MediaPagination";
 import { fetchDiscoverMovies } from "../store/Media/discoverSLice";
 import { styled } from "styled-components";
+import { MediaFilterButtons } from "@/components/MediaFilterButtons";
 
-export const SectionMovies = styled("div")`
+export const MoviePageWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-export const Section = styled.div`
+export const MoviePageSection = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-export const Container = styled.div`
-width: 1400px;
+export const MoviePageContainer = styled.div`
+  width: 2000px;
   color: #fff;
   background-color: #0d0d2f;
 `;
 
-
-
-export const Title = styled.h2`
+export const MoviePageTitle = styled.h2`
   font-size: 1.4rem;
   font-weight: bold;
   color: white;
@@ -40,8 +38,7 @@ export const Title = styled.h2`
   gap: 10px;
 `;
 
-
-export const Grid = styled.div`
+export const MovieGridWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 25px;
@@ -49,7 +46,7 @@ export const Grid = styled.div`
   justify-content: center;
 `;
 
-export const Card = styled.div`
+export const MovieCard = styled.div`
   background-color: #0d0d2f;
   border-radius: 8px;
   overflow: hidden;
@@ -64,7 +61,7 @@ export const Card = styled.div`
   }
 `;
 
-export const SectionMenu = styled.div`
+export const MoviePageMenu = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -74,56 +71,81 @@ export const SectionMenu = styled.div`
   border-radius: 8px;
 `;
 
-export const PosterWrapper = styled.div`
+export const MoviePosterWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 250px;
 `;
+
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const {
     discoverMovies,
     loading,
     error,
     moviesPage,
-    selectedCategory,
+    totalPagesMovies,
   } = useSelector((state: RootState) => state.discover);
+
   const { query } = useSelector((state: RootState) => state.search);
 
   const [filter, setFilter] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {
-    dispatch(fetchDiscoverMovies(moviesPage));
-  }, [dispatch, moviesPage]);
+    if (discoverMovies.length === 0) {
+      dispatch(fetchDiscoverMovies(moviesPage));
+    }
+  }, [dispatch, discoverMovies.length, moviesPage]);
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     dispatch(fetchDiscoverMovies(value));
   };
 
-  const filteredMovies = getFilteredMovies(discoverMovies, selectedCategory, query);
+  const filteredMovies = getFilteredMovies(discoverMovies, null, query);
   const sortedMovies = getSortedMovies(filteredMovies, filter, sortDirection);
 
-  if (loading) return <Container>Loading movies... <CircularProgress /></Container>;
-  if (error) return <Container>{error}</Container>;
+  const safeTotalPages = Math.min(totalPagesMovies, 500);
 
-  
   return (
     <div>
       <Navbar />
-      <SectionMovies>
-        <Section>
-          <Container>
-            <MoviesFilterMenu setFilter={setFilter} setSortDirection={setSortDirection} />
-            <MoviesGrid movies={sortedMovies} />
-            <MoviesPagination
-              totalPages={10}
-              page={moviesPage}
-              onPageChange={handlePageChange}
-            />
-          </Container>
-        </Section>
-      </SectionMovies>
+
+      <MoviePageWrapper>
+        <MoviePageSection>
+          <MoviePageContainer>
+            <MoviePageMenu>
+              <MoviePageTitle>Movies</MoviePageTitle>
+              <MediaFilterButtons
+                sortDirection={sortDirection}
+                setFilter={setFilter}
+                setSortDirection={setSortDirection}
+              />
+            </MoviePageMenu>
+
+            {loading && (
+              <div style={{ padding: 20, display: "flex", gap: 12, alignItems: "center" }}>
+                Loading movies... <CircularProgress size={20} />
+              </div>
+            )}
+
+            {error && <div style={{ padding: 20 }}>{error}</div>}
+
+            {!loading && !error && (
+              <>
+                <MoviesGrid movies={sortedMovies} showToggle={false} />
+                <MoviesPagination
+                  totalPages={safeTotalPages}
+                  page={moviesPage}
+                  onPageChange={handlePageChange}
+                />
+              </>
+            )}
+          </MoviePageContainer>
+        </MoviePageSection>
+      </MoviePageWrapper>
+
       <Footer />
     </div>
   );

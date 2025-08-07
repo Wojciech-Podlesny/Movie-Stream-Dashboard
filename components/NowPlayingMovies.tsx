@@ -1,35 +1,16 @@
 "use client";
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { fetchHomeContentInitial } from "@/app/store/Media/homeContentSlice";
 import { CircularProgress } from "@mui/material";
-import styled from "styled-components";
-import { MovieCarousel } from "./MovieCarousel";
-
-const Section = styled.div`   //to other files
- border-bottom: 1px solid white;
- @media (max-width: 768px) {
-    display: none;
-  }
-
-`;
-const Container = styled.div`
-  width: 400px;
-  background-color: #0d0d2f;
- 
-
-  @media (min-width: 768px) {
-    width: 1400px;
-  }
-`;
-
-const Heading = styled.div`
-  padding: 20px;
-  font-size: 23px;
-  font-weight: 700;
-  color: white;
-`;
+import { MovieCarousel } from "@/components/MovieCarousel";
+import {
+  StyledSection,
+  StyledSectionContainer,
+  StyledSectionHeading,
+} from "@/styles/MovieSection.styled";
 
 export const NowPlayingMovies = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,26 +24,28 @@ export const NowPlayingMovies = () => {
 
   if (loading) {
     return (
-      <Container>
-        Loading... <CircularProgress />
-      </Container>
+      <StyledSection>
+        <StyledSectionContainer>
+          <CircularProgress />
+        </StyledSectionContainer>
+      </StyledSection>
     );
   }
 
   if (error) {
-    return <Container>{error}</Container>;
+    return (
+      <StyledSection>
+        <StyledSectionContainer>{error}</StyledSectionContainer>
+      </StyledSection>
+    );
   }
 
   return (
-    // <Section>
-    //   <Head>Now Playing Movies</Head>
-    //   <MovieCarousel movies={nowPlayingMovies} />
-    // </Section>
-    <Section>
-      <Container>
-        <Heading>Now Playing Movies</Heading>
+    <StyledSection>
+      <StyledSectionContainer>
+        <StyledSectionHeading>Now Playing Movies</StyledSectionHeading>
         <MovieCarousel movies={nowPlayingMovies} />
-      </Container>
-    </Section>
+      </StyledSectionContainer>
+    </StyledSection>
   );
 };

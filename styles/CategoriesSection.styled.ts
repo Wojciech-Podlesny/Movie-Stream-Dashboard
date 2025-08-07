@@ -1,7 +1,7 @@
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { styled } from "styled-components";
 
-export const SectionHeader = styled.div`        
+export const CategorySectionHeader = styled.div`        
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,7 +9,7 @@ export const SectionHeader = styled.div`
   padding: 10px 0;
 `;
 
-export const SectionTitle = styled.div`
+export const CategorySectionTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -22,14 +22,14 @@ export const SectionTitle = styled.div`
   }
 `;
 
-export const DropdownIcon = styled(ArrowDropDownOutlinedIcon)<{ isOpen: boolean }>`
+export const CategoryDropdownIcon = styled(ArrowDropDownOutlinedIcon)<{ isOpen: boolean }>`
   transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
   transition: transform 0.3s ease;
   font-size: 24px;
   color: white;
 `;
 
-export const CategoryList = styled.ul<{ isVisible: boolean }>`
+export const CategoryListWrapper = styled.ul<{ isVisible: boolean }>`
   list-style: none;
   margin: 8px 0 16px;
   padding-left: 10px;
@@ -42,7 +42,7 @@ export const CategoryList = styled.ul<{ isVisible: boolean }>`
   }
 `;
 
-export const CategoryItem = styled.li<{ active?: boolean }>`
+export const CategoryListItem = styled.li<{ active?: boolean }>`
   font-size: 0.95rem;
   color: ${({ active }) => (active ? "#00ffd0" : "white")};
   font-weight: ${({ active }) => (active ? "bold" : 400)};

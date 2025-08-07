@@ -1,7 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-// import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-// import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -38,7 +36,7 @@ const FilterButton = styled.button<{ active?: boolean }>`
   }
 `;
 
-type MediaFilterMenuProps = {          //to other files
+type MediaFilterMenuProps = {    
   setFilter: (value: string) => void;
   setSortDirection: (dir: "asc" | "desc") => void;
 };
@@ -89,3 +87,5 @@ export const MoviesFilterMenu = ({ setFilter, setSortDirection }: MediaFilterMen
     </SectionTitle>
   );
 };
+
+// do usunięcia

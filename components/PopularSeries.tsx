@@ -8,13 +8,15 @@ import { MediaFilterBar } from "./MediaFilterBar";
 import { SeriesGrid } from "./SeriesGrid";
 import { fetchHomeContentInitial } from "@/app/store/Media/homeContentSlice";
 import { styled } from "styled-components";
+import { MediaHeaderTitle } from "./MediaHeaderTitle";
 
-export const Container = styled.div`
+
+
+export const PopularMediaWrapper = styled.div`
   width: 100%;
   color: #fff;
   background-color: #0d0d2f;
   border-bottom: 1px solid white;
-
 
   @media (max-width: 480px) {
     padding: 0 6px;
@@ -41,16 +43,17 @@ export const PopularSeries = () => {
   
     if (loading)
       return (
-        <Container>
+        <PopularMediaWrapper>
           {" "}
           Loading series <CircularProgress />{" "}
-        </Container>
+        </PopularMediaWrapper>
       );
   
-    if (error) return <Container>{error}</Container>;
+    if (error) return <PopularMediaWrapper>{error}</PopularMediaWrapper>;
 
   return (
-    <Container>
+    <PopularMediaWrapper>
+       <MediaHeaderTitle type={"series"}  />
     <MediaFilterBar
            filter={filter}
            sortDirection={sortDirection}
@@ -61,6 +64,6 @@ export const PopularSeries = () => {
          />
 
      <SeriesGrid series={sortedSeries} />
-    </Container>
+    </PopularMediaWrapper>
   );
 };

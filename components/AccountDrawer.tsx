@@ -4,7 +4,7 @@ import { Drawer, Button, Box } from "@mui/material";
 import Link from "next/link";
 
 
-export const AccountDrawer = ({open,onClose, handleLogout}: AccountDrawerProps) => (
+export const AccountDrawer = ({open, onClose, handleLogout}: AccountDrawerProps) => (
   <Drawer
     anchor="right"
     open={open}

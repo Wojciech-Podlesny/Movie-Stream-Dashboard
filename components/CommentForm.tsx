@@ -1,84 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { TextField, Button, Tooltip } from '@mui/material';
+
+import { TextField, Tooltip } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useSession } from 'next-auth/react';
 import { showErrorToast } from './ErrorToast';
-import { CommentSectionProps,Comment } from '@/types/comments';
-
-
-const fadeInUp = keyframes`
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
-const Container = styled.div`
-  background-color: #1e1e1e;
-  padding: 30px;
-  border-radius: 16px;
-  color: white;
-  max-width: 800px;
-  margin: 80px auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-`;
-
-const Title = styled.h2`
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 24px;
-`;
-
-const StarsContainer = styled.div`
-  display: flex;
-  gap: 6px;
-  margin: 10px 0 20px;
-`;
-
-const StyledButton = styled(Button)`
-  background: linear-gradient(to right, #facc15, #f59e0b);
-  color: white;
-  border-radius: 9999px;
-  font-weight: bold;
-  margin-top: 25px;
-  padding: 8px 24px;
-  &:hover { background: linear-gradient(to right, #fbbf24, #f59e0b); }
-`;
-
-const CommentsList = styled.div`
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const CommentItem = styled.div`
-  background: #2e2e2e;
-  padding: 16px;
-  border-radius: 12px;
-  animation: ${fadeInUp} 0.4s ease forwards;
-`;
-
-const CommentHeader = styled.div`
-  font-size: 14px;
-  margin-bottom: 6px;
-  color: #999;
-  strong { color: #facc15; }
-`;
-
-const CommentText = styled.p`
-  margin: 0;
-  font-size: 15px;
-  color: #ddd;
-`;
-
-const NoComment = styled.p`
-  text-align: center;
-  color: #aaa;
-  margin-top: 30px;
-  font-style: italic;
-`;
+import { CommentSectionProps, Comment } from '@/types/comments';
+import { EmptyReviewMessage, ReviewContainer, ReviewList, ReviewMeta, ReviewText, ReviewTitle, SingleReview, StarRating, SubmitReviewButton } from '@/styles/CommentForm.styled';
 
 export const CommentForm = ({ itemId, type }: CommentSectionProps) => {
   const { data: session } = useSession();
@@ -102,7 +31,6 @@ export const CommentForm = ({ itemId, type }: CommentSectionProps) => {
           setComments(formatted);
         } else {
           console.error("Fetch error:", data.error);
-          console.log("Failed to fetch comments:", data);
         }
       } catch (err) {
         console.error("Fetch failed:", err);
@@ -156,11 +84,11 @@ export const CommentForm = ({ itemId, type }: CommentSectionProps) => {
   };
 
   return (
-    <Container>
-      <Title>Leave a Review</Title>
+    <ReviewContainer>
+      <ReviewTitle>Leave a Review</ReviewTitle>
 
       <label>Rating (1–10):</label>
-      <StarsContainer>
+      <StarRating>
         {[...Array(10)].map((_, index) => (
           <Tooltip title={`${index + 1}/10`} key={index}>
             <StarIcon
@@ -173,7 +101,7 @@ export const CommentForm = ({ itemId, type }: CommentSectionProps) => {
             />
           </Tooltip>
         ))}
-      </StarsContainer>
+      </StarRating>
 
       <TextField
         fullWidth
@@ -198,24 +126,24 @@ export const CommentForm = ({ itemId, type }: CommentSectionProps) => {
         }}
       />
 
-      <StyledButton fullWidth onClick={handleSubmit} disabled={!text || rating === 0}>
+      <SubmitReviewButton fullWidth onClick={handleSubmit} disabled={!text || rating === 0}>
         Submit Review
-      </StyledButton>
+      </SubmitReviewButton>
 
       {comments.length === 0 ? (
-        <NoComment>No comments yet. Be the first!</NoComment>
+        <EmptyReviewMessage>No comments yet. Be the first!</EmptyReviewMessage>
       ) : (
-        <CommentsList>
+        <ReviewList>
           {comments.map((comment) => (
-            <CommentItem key={comment.id}>
-              <CommentHeader>
+            <SingleReview key={comment.id}>
+              <ReviewMeta>
                 <strong>{comment.username}</strong> ({comment.date} | {comment.rating}/10)
-              </CommentHeader>
-              <CommentText>{comment.text}</CommentText>
-            </CommentItem>
+              </ReviewMeta>
+              <ReviewText>{comment.text}</ReviewText>
+            </SingleReview>
           ))}
-        </CommentsList>
+        </ReviewList>
       )}
-    </Container>
+    </ReviewContainer>
   );
 };
