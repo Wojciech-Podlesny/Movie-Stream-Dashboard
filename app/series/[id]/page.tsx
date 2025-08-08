@@ -16,7 +16,7 @@ import { MoviesDetailsSection } from "@/components/MoviesDetailsSection";
 import { CommentForm } from "@/components/CommentForm";
 
 
-const SectionMedia = styled("div")`
+const SectionMedia = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -31,7 +31,7 @@ const TrailerContainer = styled.div`
   margin-top: 40px;
 `;
 
-export const MediaContainer = styled.div`
+const MediaContainer = styled.div`
   width: 100%;
   max-width: 1700px;
   color: #fff;
