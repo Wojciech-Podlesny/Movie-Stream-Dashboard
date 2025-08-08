@@ -13,7 +13,7 @@ import { MoviesTrailer } from "@/components/MediaTrailer";
 import { ErrorState, LoadingState } from "@/utils/renderStates";
 import { MoviesDetailsSection } from "@/components/MoviesDetailsSection";
 import { CommentForm } from "@/components/CommentForm";
-import { MediaContainer, SectionMain, SectionMedia, SectionMediaDetails, TrailerContainer } from "@/styles/MediaDetailsPage.styled";
+import { MediaWrapper, SectionMain, SectionMedia, SectionMediaDetails, TrailerContainer } from "@/styles/MediaDetailsPage.styled";
 
 
 const SeriesDetails = () => {
@@ -41,7 +41,7 @@ const SeriesDetails = () => {
         <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen((prev) => !prev)} />
         <SectionMedia>
           <SectionMain>
-            <MediaContainer>
+            <MediaWrapper>
               <MoviesDetailsSection
                 posterPath={series.poster_path}
                 title={series.name}
@@ -54,7 +54,7 @@ const SeriesDetails = () => {
                 <MoviesTrailer movieTitle={series.name} />
               </TrailerContainer>
               <CommentForm itemId={id} type="series" />
-            </MediaContainer>
+            </MediaWrapper>
           </SectionMain>
         </SectionMedia>
         <FavouritesList />

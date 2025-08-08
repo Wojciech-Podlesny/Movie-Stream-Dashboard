@@ -16,7 +16,7 @@ import { CommentForm } from "@/components/CommentForm";
 import { MoviesDetailsSection } from "@/components/MoviesDetailsSection";
 import { Sidebar } from "@/components/Sidebar";
 import { FavouritesList } from "@/components/FavouritesList";
-import { MediaContainer, SectionMain, SectionMedia, SectionMediaDetails, TrailerContainer } from "@/styles/MediaDetailsPage.styled";
+import { MediaWrapper, SectionMain, SectionMedia, SectionMediaDetails, TrailerContainer } from "@/styles/MediaDetailsPage.styled";
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,7 +46,7 @@ const MovieDetails = () => {
         />
         <SectionMedia>
           <SectionMain>
-            <MediaContainer>
+            <MediaWrapper>
               <MoviesDetailsSection
                 posterPath={movie.poster_path}
                 title={movie.title}
@@ -59,7 +59,7 @@ const MovieDetails = () => {
                 <MoviesTrailer movieTitle={movie.title} />
               </TrailerContainer>
               <CommentForm itemId={id} type="movie" />
-            </MediaContainer>
+            </MediaWrapper>
           </SectionMain>
         </SectionMedia>
         <FavouritesList />
