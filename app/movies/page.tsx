@@ -10,27 +10,30 @@ import { getFilteredMovies, getSortedMovies } from "@/utils/filterMovies";
 import { MoviesGrid } from "@/components/MoviesGrid";
 import { MoviesPagination } from "@/components/MediaPagination";
 import { fetchDiscoverMovies } from "../store/Media/discoverSLice";
-import { styled } from "styled-components";
 import { MediaFilterButtons } from "@/components/MediaFilterButtons";
+import { styled } from "styled-components";
+import { SectionMediaDetails } from "@/styles/MediaDetailsPage.styled";
+import { Sidebar } from "@/components/Sidebar";
+import { FavouritesList } from "@/components/FavouritesList";
 
-export const MoviePageWrapper = styled.div`
+export const MediaPageWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-export const MoviePageSection = styled.div`
+export const MediaPageSection = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-export const MoviePageContainer = styled.div`
+export const MediaPageContainer = styled.div`
   width: 2000px;
   color: #fff;
   background-color: #0d0d2f;
 `;
 
-export const MoviePageTitle = styled.h2`
+export const MediaPageTitle = styled.h2`
   font-size: 1.4rem;
   font-weight: bold;
   color: white;
@@ -38,7 +41,7 @@ export const MoviePageTitle = styled.h2`
   gap: 10px;
 `;
 
-export const MovieGridWrapper = styled.div`
+export const MediaGridWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 25px;
@@ -46,7 +49,7 @@ export const MovieGridWrapper = styled.div`
   justify-content: center;
 `;
 
-export const MovieCard = styled.div`
+export const MediaCard = styled.div`
   background-color: #0d0d2f;
   border-radius: 8px;
   overflow: hidden;
@@ -61,7 +64,7 @@ export const MovieCard = styled.div`
   }
 `;
 
-export const MoviePageMenu = styled.div`
+export const MediaPageMenu = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -71,11 +74,12 @@ export const MoviePageMenu = styled.div`
   border-radius: 8px;
 `;
 
-export const MoviePosterWrapper = styled.div`
+export const MediaPosterWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 250px;
 `;
+
 
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -89,9 +93,9 @@ const Movies = () => {
   } = useSelector((state: RootState) => state.discover);
 
   const { query } = useSelector((state: RootState) => state.search);
-
   const [filter, setFilter] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [sidebarOpen,setSidebarOpen] = useState<boolean>(true)
 
   useEffect(() => {
     if (discoverMovies.length === 0) {
@@ -105,24 +109,27 @@ const Movies = () => {
 
   const filteredMovies = getFilteredMovies(discoverMovies, null, query);
   const sortedMovies = getSortedMovies(filteredMovies, filter, sortDirection);
-
   const safeTotalPages = Math.min(totalPagesMovies, 500);
 
   return (
-    <div>
+    <>
       <Navbar />
-
-      <MoviePageWrapper>
-        <MoviePageSection>
-          <MoviePageContainer>
-            <MoviePageMenu>
-              <MoviePageTitle>Movies</MoviePageTitle>
+      <SectionMediaDetails leftCol={sidebarOpen ? 250 : 60}>
+        <Sidebar
+                  isOpen={sidebarOpen}
+                  onToggle={() => setSidebarOpen((prev) => !prev)}
+                />
+                <MediaPageWrapper>
+        <MediaPageSection>
+          <MediaPageContainer>
+            <MediaPageMenu>
+              <MediaPageTitle>Movies</MediaPageTitle>
               <MediaFilterButtons
                 sortDirection={sortDirection}
                 setFilter={setFilter}
                 setSortDirection={setSortDirection}
               />
-            </MoviePageMenu>
+            </MediaPageMenu>
 
             {loading && (
               <div style={{ padding: 20, display: "flex", gap: 12, alignItems: "center" }}>
@@ -142,12 +149,16 @@ const Movies = () => {
                 />
               </>
             )}
-          </MoviePageContainer>
-        </MoviePageSection>
-      </MoviePageWrapper>
+          </MediaPageContainer>
+        </MediaPageSection>
+      </MediaPageWrapper>
+      <FavouritesList />
+      </SectionMediaDetails>
+
+      
 
       <Footer />
-    </div>
+    </>
   );
 };
 

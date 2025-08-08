@@ -16,7 +16,9 @@ import { app } from "@/lib/firebase/firebase";
 import { getSession } from "next-auth/react";
 import { showErrorToast } from "./ErrorToast";
 import { useRouter } from "next/navigation";
-import { AccountFormData,accountFormSchema } from "@/lib/validation/user-validation";
+import { AccountFormData,AccountFormSchema } from "@/lib/validation/users/AccountFormSchema";
+
+
 
 export const AccountForm = () => {
   const auth = getAuth(app);
@@ -35,7 +37,7 @@ export const AccountForm = () => {
   reset,
   setValue,
 } = useForm<AccountFormData>({
-  resolver: zodResolver(accountFormSchema),
+  resolver: zodResolver(AccountFormSchema),
 });
 
 

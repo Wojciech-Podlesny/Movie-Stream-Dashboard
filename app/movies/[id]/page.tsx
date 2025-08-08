@@ -11,30 +11,30 @@ import {
   fetchMoviesDetails,
   resetMoviesDetails,
 } from "@/app/store/Media/detailsMoviesSlice";
-import { renderError, renderLoading } from "@/utils/renderError";
+import { ErrorState, LoadingState } from "@/utils/renderStates";
 import { styled } from "styled-components";
 import { CommentForm } from "@/components/CommentForm";
 import { MoviesDetailsSection } from "@/components/MoviesDetailsSection";
 import { Sidebar } from "@/components/Sidebar";
 import { FavouritesList } from "@/components/FavouritesList";
 
-// --- Styled Components (unchanged from your version except SectionX at the end) ---
-const SectionMovies = styled("div")`
+
+const SectionMedia = styled("div")`
   display: flex;
   justify-content: center;
 `;
 
-const Section = styled.div`
+const SectionMain = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
 
-const TrailerWrapper = styled.div`
+const TrailerContainer = styled.div`
   margin-top: 40px;
 `;
 
-export const Container = styled.div`
+export const MediaContainer = styled.div`
   width: 100%;
   max-width: 1700px;
   color: #fff;
@@ -47,9 +47,7 @@ export const Container = styled.div`
   }
 `;
 
-// ... other styled components from your original code ...
-
-const SectionX = styled.div<{ leftCol?: number }>`
+const SectionMediaDetails = styled.div<{ leftCol?: number }>`
   display: grid;
   grid-template-columns: ${({ leftCol = 250 }) => `${leftCol}px 1fr 250px`};
   grid-template-areas: "left content right";
@@ -66,10 +64,7 @@ const SectionX = styled.div<{ leftCol?: number }>`
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
-  const { movie, loading, error } = useSelector(
-    (state: RootState) => state.moviesDetails
-  );
-
+  const { movie, loading, error } = useSelector((state: RootState) => state.moviesDetails);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
@@ -81,20 +76,20 @@ const MovieDetails = () => {
     };
   }, [dispatch, id]);
 
-  if (loading) return renderLoading();
-  if (error || !movie) return renderError(error);
-
+  if (loading) return <LoadingState message="Loading" />
+  if (error || !movie) return <ErrorState message={error} />
+  
   return (
     <>
       <Navbar />
-      <SectionX leftCol={sidebarOpen ? 250 : 60}>
+      <SectionMediaDetails leftCol={sidebarOpen ? 250 : 60}>
         <Sidebar
           isOpen={sidebarOpen}
           onToggle={() => setSidebarOpen((prev) => !prev)}
         />
-        <SectionMovies>
-          <Section>
-            <Container>
+        <SectionMedia>
+          <SectionMain>
+            <MediaContainer>
               <MoviesDetailsSection
                 posterPath={movie.poster_path}
                 title={movie.title}
@@ -103,15 +98,15 @@ const MovieDetails = () => {
                 overview={movie.overview}
                 id={movie.id}
               />
-              <TrailerWrapper>
+              <TrailerContainer>
                 <MoviesTrailer movieTitle={movie.title} />
-              </TrailerWrapper>
+              </TrailerContainer>
               <CommentForm itemId={id} type="movie" />
-            </Container>
-          </Section>
-        </SectionMovies>
+            </MediaContainer>
+          </SectionMain>
+        </SectionMedia>
         <FavouritesList />
-      </SectionX>
+      </SectionMediaDetails>
       <Footer />
     </>
   );

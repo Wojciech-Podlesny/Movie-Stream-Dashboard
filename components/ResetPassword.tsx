@@ -1,12 +1,12 @@
 "use client";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ForgotPasswordFormData, ForgotPasswordSchema } from "@/lib/validation/user-validation";
 import { useState } from "react";
 import { Box, TextField, Button, Typography, Link as MuiLink } from "@mui/material";
 import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
+import { ForgotPasswordFormData, ForgotPasswordSchema } from "@/lib/validation/users/ForgotPasswordSchema";
 
 export const ResetPassword = () => {
   const [message, setMessage] = useState<string | null>(null);

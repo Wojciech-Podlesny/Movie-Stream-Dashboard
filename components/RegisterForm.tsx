@@ -2,10 +2,7 @@
 
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  RegisterSchema,
-  type RegisterFormData,
-} from "@/lib/validation/user-validation";
+
 import {
   Box,
   TextField,
@@ -21,6 +18,7 @@ import {
 import { auth } from "@/lib/firebase/firebase";
 import { useRouter } from "next/navigation";
 import { showErrorToast, showSuccessToast } from "./ErrorToast";
+import { RegisterFormData, RegisterSchema } from "@/lib/validation/users/RegisterSchema";
 
 export const RegisterForm = () => {
   const router = useRouter();

@@ -10,12 +10,9 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import {
-  LoginSchema,
-  type LoginFormData,
-} from "@/lib/validation/user-validation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoginFormData, LoginSchema } from "@/lib/validation/users/LoginSchema";
 
 
 export const LoginForm = () => {

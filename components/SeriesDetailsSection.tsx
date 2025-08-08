@@ -77,7 +77,7 @@ type MoviesHeaderProps = {
   overview: string;
 };
 
-export const MoviesDetailsSection = ({
+export const SeriesDetailsSection = ({
   id,
   posterPath,
   title,
