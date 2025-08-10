@@ -50,3 +50,22 @@ export const RemoveFavoriteButton = styled.button`
   align-items: center;
   justify-content: center;
 `;
+
+export const NotLoggedBox = styled.div`
+  color: white;
+  text-align: center;
+  border-radius: 12px;
+  padding: 24px 16px;
+  max-width: 400px;
+  margin: 0 auto;
+`;
+
+export const NotLoggedText = styled.p`
+  margin-bottom: 12px;
+`;
+
+export const NotLoggedButtons = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+`;

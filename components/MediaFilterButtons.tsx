@@ -1,13 +1,8 @@
 'use client'
 
+import { MediaFilterButtonsProps } from "@/types/mediaFilter";
 import { Button, Stack } from "@mui/material";
 import { useState } from "react";
-
-type MediaFilterButtonsProps = {
-  sortDirection: "asc" | "desc";
-  setFilter: (val: string) => void;
-  setSortDirection: (val: "asc" | "desc") => void;
-};
 
 export const MediaFilterButtons = ({
   sortDirection,

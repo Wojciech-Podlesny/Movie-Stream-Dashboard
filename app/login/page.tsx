@@ -1,16 +1,20 @@
 "use client";
-import { Footer } from "@/components/Footer";
-import { LoginForm } from "@/components/LoginForm";
+
 import { Navbar } from "@/components/Navbar";
+import { LoginForm } from "@/components/LoginForm";
+import { Footer } from "@/components/Footer";
+import { FormContainer, PageMain, PageWrapper } from "@/styles/Layout.styled";
 
-const Login = () => {
+export default function Login() {
   return (
-    <>
+    <PageWrapper>
       <Navbar />
-      <LoginForm />
+      <PageMain>
+        <FormContainer>
+          <LoginForm />
+        </FormContainer>
+      </PageMain>
       <Footer />
-    </>
+    </PageWrapper>
   );
-};
-
-export default Login;
+}

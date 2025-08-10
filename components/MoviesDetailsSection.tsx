@@ -1,72 +1,8 @@
 import Image from "next/image";
-import { styled } from "styled-components";
 import { Typography,  Tooltip, Collapse } from "@mui/material";
 import { FavouritesButton } from "./FavouritesButton";
 import { DescriptionReadMore } from "./DescriptionReadMore";
-
-const MovieHeaderLayout = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 40px;
-  margin: 40px;
-  flex-wrap: wrap;
-  padding: 20px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-  }
-`;
-
-const MovieHeaderInfo = styled.div`
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const MovieHeaderPosterWrapper = styled.div`
-  flex-shrink: 0;
-  padding-left: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    padding-left: 0;
-  }
-`;
-
-const MovieHeaderMetaData = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: flex-start;
-`;
-
-const MovieHeaderOverview = styled.div`
-  margin-top: 32px;
-  color: white;
-  width: 100%;
-
-  & h6 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 4px;
-    color: #90caf9;
-  }
-`;
-
-const MovieHeaderTitleRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-`;
+import { MediaHeaderInfo, MediaHeaderLayout, MediaHeaderMetaData, MediaHeaderOverview, MediaHeaderPosterWrapper, MediaHeaderTitleRow } from "@/styles/MediaDetailsSection.styled";
 
 type MoviesHeaderProps = {
   id: number;
@@ -85,8 +21,8 @@ export const MoviesDetailsSection = ({
   voteAverage,
   overview,
 }: MoviesHeaderProps) => (
-  <MovieHeaderLayout>
-    <MovieHeaderPosterWrapper>
+  <MediaHeaderLayout>
+    <MediaHeaderPosterWrapper>
       <Image
         src={`https://image.tmdb.org/t/p/w500${posterPath}`}
         alt={title}
@@ -102,16 +38,16 @@ export const MoviesDetailsSection = ({
       >
         {title}
       </Typography>
-    </MovieHeaderPosterWrapper>
+    </MediaHeaderPosterWrapper>
 
-    <MovieHeaderInfo>
-      <MovieHeaderTitleRow>
+    <MediaHeaderInfo>
+      <MediaHeaderTitleRow>
         <Typography variant="h5" color="white" sx={{ fontWeight: 600 }}>
           {title}
         </Typography>
-      </MovieHeaderTitleRow>
+      </MediaHeaderTitleRow>
 
-      <MovieHeaderMetaData>
+      <MediaHeaderMetaData>
         <Tooltip title="Data premiery" arrow>
           <Typography
             variant="body1"
@@ -155,16 +91,16 @@ export const MoviesDetailsSection = ({
           }}
           aria-label="Dodaj do ulubionych"
         />
-      </MovieHeaderMetaData>
+      </MediaHeaderMetaData>
 
-      <MovieHeaderOverview>
+      <MediaHeaderOverview>
         <Typography variant="subtitle1" component="h6">
           Description:
         </Typography>
         <Collapse in={true} timeout={300}>
           <DescriptionReadMore text={overview} />
         </Collapse>
-      </MovieHeaderOverview>
-    </MovieHeaderInfo>
-  </MovieHeaderLayout>
+      </MediaHeaderOverview>
+    </MediaHeaderInfo>
+  </MediaHeaderLayout>
 );

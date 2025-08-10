@@ -6,7 +6,6 @@ import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip, Button } from "@mui/material";
 import { FavouriteItem } from "@/types/favourites";
-import styled from "styled-components";
 import {
   FavoritesHeading,
   FavoritesGrid,
@@ -14,26 +13,10 @@ import {
   FavoritePoster,
   RemoveFavoriteButton,
   FavoritesWrapper,
+  NotLoggedBox,
+  NotLoggedText,
+  NotLoggedButtons,
 } from "@/styles/FavouritesList.styled";
-
-const NotLoggedBox = styled.div`
-  color: white;
-  text-align: center;
-  border-radius: 12px;
-  padding: 24px 16px;
-  max-width: 400px;
-  margin: 0 auto;
-`;
-
-const NotLoggedText = styled.p`
-  margin-bottom: 12px;
-`;
-
-const NotLoggedButtons = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-`;
 
 export const FavouritesList = () => {
   const { data: session, status } = useSession();

@@ -88,7 +88,41 @@ export const MediaFilterDesktopMenu = styled.div`
     display: flex;
     align-items: center;
     justify-content: start;
-    padding: 0 10px;
+    padding: 10px;
     background-color: #0e0e2b;
   }
+`;
+
+export const HeaderWithFilterWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+
+  @media (min-width: 769px) {
+    padding-bottom: 0;
+  }
+`;
+
+export const MobileFilterToggle = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 16px;
+  font-size: 20px;
+  color: #fff; 
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+export const HeaderWithFilter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 `;

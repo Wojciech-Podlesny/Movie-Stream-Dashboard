@@ -5,11 +5,11 @@ import { fetchTrailer, resetTrailerState } from "@/app/store/Media/trailerSlice"
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import {
   TrailerWrapper,
-  TrailerMessage,
   TrailerIframe,
   TrailerTitle,
   TrailerWatchButton
 } from "@/styles/MediaTrailer.styled";
+import { ErrorState, LoadingState } from "@/utils/renderStates";
 
 type MovieTrailerProps = {
   movieTitle: string;
@@ -27,8 +27,8 @@ export const MoviesTrailer = ({ movieTitle }: MovieTrailerProps) => {
     };
   }, [movieTitle, dispatch]);
 
-  if (loading) return <TrailerMessage>Loading movie trailer...</TrailerMessage>;
-  if (error) return <TrailerMessage>{error}</TrailerMessage>;
+  if (loading) return <LoadingState message="Loading trailer" />;
+  if (error) return <ErrorState message={error} />;
   if (!videoKey) return null;
 
   const youtubeUrl = `https://www.youtube.com/watch?v=${videoKey}`;

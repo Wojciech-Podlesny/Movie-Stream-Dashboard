@@ -1,67 +1,80 @@
+'use client';
+
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../app/store/store";
-import { useEffect, useState } from "react";
-import { CircularProgress } from "@mui/material";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { getFilteredMovies, getSortedMovies } from "@/utils/filterMovies";
 import { MediaFilterBar } from "./MediaFilterBar";
 import { MoviesGrid } from "./MoviesGrid";
 import { fetchHomeContentInitial } from "@/app/store/Media/homeContentSlice";
-
-import { styled } from "styled-components";
 import { MediaHeaderTitle } from "./MediaHeaderTitle";
+import { PopularMediaWrapper } from "@/styles/MediaPopularWrapper.styled";
+import { ErrorState, LoadingState } from "@/utils/renderStates";
+import FilterListAltIcon from '@mui/icons-material/FilterListAlt';
+import ClearIcon from '@mui/icons-material/Clear';
+import {MobileFilterToggle,HeaderWithFilter,} from "@/styles/MediaFilterBar.styled";
+import FiltersDrawer from "./MobileFilterDrawer";
 
- const PopularMediaWrapper = styled.div`
-  width: 100%;
-  color: #fff;
-  background-color: #0d0d2f;
-  border-bottom: 1px solid white;
-
-  @media (max-width: 480px) {
-    padding: 0 6px;
-  }
-`;
 
 export const PopularMovies = () => {
-  const { error, loading, popularMovies } = useSelector((state: RootState) => state.home);
-  const { selectedMovieCategory } = useSelector((state: RootState) => state.categories);
+  const { error, loading, popularMovies } = useSelector((s: RootState) => s.home);
+  const { selectedMovieCategory } = useSelector((s: RootState) => s.categories);
+  const { query } = useSelector((s: RootState) => s.search);
   const dispatch = useDispatch<AppDispatch>();
-  const { query } = useSelector((state: RootState) => state.search);
-  const [showAllMovies, setShowAllMovies] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchHomeContentInitial());
   }, [dispatch]);
 
-  const filteredMovies = getFilteredMovies(popularMovies, selectedMovieCategory, query);
-  const sortedMovies = getSortedMovies(filteredMovies, filter, sortDirection);
+  const filteredMovies = useMemo(
+    () => getFilteredMovies(popularMovies, selectedMovieCategory, query),
+    [popularMovies, selectedMovieCategory, query]
+  );
 
-  if (loading)
-    return (
-      <PopularMediaWrapper>
-        {" "}
-        <CircularProgress />{" "}
-      </PopularMediaWrapper>
-    );
+  const sortedMovies = useMemo(
+    () => getSortedMovies(filteredMovies, filter, sortDirection),
+    [filteredMovies, filter, sortDirection]
+  );
 
-  if (error) return <PopularMediaWrapper>{error}</PopularMediaWrapper>;
+  const toggleFilters = useCallback(() => setIsFiltersOpen(v => !v), []);
+  const closeFilters = useCallback(() => setIsFiltersOpen(false), []);
+
+  if (loading) return <LoadingState message="Loading movies" />;
+  if (error) return <ErrorState message={error} />;
 
   return (
     <PopularMediaWrapper>
-      <MediaHeaderTitle type={"movies"}  />
+      <HeaderWithFilter>
+        <MediaHeaderTitle type="movies" />
+        <MobileFilterToggle
+          aria-label="Pokaż filtry"
+          aria-haspopup="dialog"
+          aria-expanded={isFiltersOpen}
+          onClick={toggleFilters}
+        >
+          {isFiltersOpen ? <ClearIcon fontSize="medium" /> : <FilterListAltIcon fontSize="medium" />}
+        </MobileFilterToggle>
+      </HeaderWithFilter>
+
+
       <MediaFilterBar
-        filter={filter}
         sortDirection={sortDirection}
         setFilter={setFilter}
         setSortDirection={setSortDirection}
-        showAll={showAllMovies}
-        toggleShowAll={() => setShowAllMovies((prev) => !prev)}
       />
+
+      <FiltersDrawer
+        isOpen={isFiltersOpen}
+        onClose={closeFilters}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+        setFilter={setFilter}
+      />
+
       <MoviesGrid movies={sortedMovies} />
-    
     </PopularMediaWrapper>
   );
 };
-

@@ -76,8 +76,12 @@ export const categoriesSlice = createSlice({
     clearSelectedCategories: (state) => {
       state.selectedMovieCategory = null;
       state.selectedSeriesCategory = null;
-      state.moviesCategories = [];
-      state.seriesCategories = [];
+    },
+     clearSelectedMovieCategory: (state) => {
+      state.selectedMovieCategory = null;
+    },
+    clearSelectedSeriesCategory: (state) => {
+      state.selectedSeriesCategory = null;
     },
   },
 
@@ -103,5 +107,7 @@ export const {
   setSelectedMovieCategory,
   setSelectedSeriesCateogory,
   clearSelectedCategories,
+  clearSelectedMovieCategory,
+  clearSelectedSeriesCategory
 } = categoriesSlice.actions;
 export const categoriesReducer = categoriesSlice.reducer;

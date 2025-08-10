@@ -17,6 +17,7 @@ import { getSession } from "next-auth/react";
 import { showErrorToast } from "./ErrorToast";
 import { useRouter } from "next/navigation";
 import { AccountFormData,AccountFormSchema } from "@/lib/validation/users/AccountFormSchema";
+import { LoadingState } from "@/utils/renderStates";
 
 
 
@@ -80,11 +81,11 @@ export const AccountForm = () => {
         }),
       });
 
-      const r1 = await responseUpdate.json();
-      const r2 = await responseChange.json();
+      const responseDataUpdate = await responseUpdate.json();
+      const responseDataChange = await responseChange.json();
 
       if (!responseUpdate.ok || !responseChange.ok) {
-        throw new Error(r1.error || r2.error || "An error occurred");
+        throw new Error(responseDataUpdate.error || responseDataChange.error || "An error occurred");
       }
 
       await auth.currentUser?.reload();
@@ -103,7 +104,7 @@ export const AccountForm = () => {
     if (!confirm("Are you sure you want to delete your account?")) return;
 
     try {
-      const res = await fetch("/api/account/delete", {
+      const responseDelete = await fetch("/api/account/delete", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session?.user.idToken}`,
@@ -111,27 +112,22 @@ export const AccountForm = () => {
         },
       });
 
-      const data = await res.json();
+      const responseDataDelete = await responseDelete.json();
 
-      if (res.ok) {
+      if (responseDataDelete.ok) {
         showErrorToast("Your account has been deleted");
         router.push("/"); 
         
       } else {
-        showErrorToast(data.error || "Failed to delete account.");
+        showErrorToast(responseDataDelete.error || "Failed to delete account.");
       }
-    } catch (err) {
-      showErrorToast(`${err} Unexpected error`);
+    } catch (error) {
+      showErrorToast(`${error} Unexpected error`);
     }
   };
 
-  if (loading) {
-    return (
-      <Typography align="center" mt={8}>
-        Loading account info...
-      </Typography>
-    );
-  }
+
+  if (loading) return <LoadingState message="Loading account info" />
 
   return (
     <Box

@@ -3,3 +3,4 @@ export type AccountDrawerProps = {
   onClose: () => void;
   handleLogout: () => void;
 }
+

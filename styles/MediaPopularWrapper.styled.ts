@@ -8,6 +8,6 @@ import { styled } from "styled-components";
   border-bottom: 1px solid white;
 
   @media (max-width: 480px) {
-    padding: 0 6px;
+    padding: 6px;
   }
 `;

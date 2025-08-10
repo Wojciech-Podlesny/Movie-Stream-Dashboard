@@ -56,8 +56,6 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
         const { error } = await responseFavourites.json();
         throw new Error(error || "Unknown error");
       }
-
-      // natychmiastowa zmiana UI
       setIsFavorite((prev) => !prev);
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -79,9 +77,9 @@ export const FavouritesButton = ({ itemId, type, data }: FavoriteButtonProps) =>
         }}
       >
         {isFavorite ? (
-          <FavoriteIcon sx={{ color: "red" }} /> // czerwone wypełnione
+          <FavoriteIcon sx={{ color: "red" }} />
         ) : (
-          <FavoriteBorderIcon sx={{ color: "white" }} /> // puste białe
+          <FavoriteBorderIcon sx={{ color: "white" }} />
         )}
       </Button>
     </Tooltip>

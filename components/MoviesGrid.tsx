@@ -28,7 +28,7 @@ type MoviesProps = {
 export const MoviesGrid = ({
   movies,
   showToggle = true,
-  initialVisible = 5,
+  initialVisible = 6,
 }: MoviesProps) => {
   const [showAll, setShowAll] = useState(false);
 

@@ -5,52 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
-import { CircularProgress } from "@mui/material";
 import { getFilteredMovies, getSortedMovies } from "@/utils/filterMovies";
 import { MoviesGrid } from "@/components/MoviesGrid";
 import { MoviesPagination } from "@/components/MediaPagination";
 import { fetchDiscoverMovies } from "../store/Media/discoverSLice";
 import { MediaFilterButtons } from "@/components/MediaFilterButtons";
-import { styled } from "styled-components";
+
 import { Sidebar } from "@/components/Sidebar";
 import { FavouritesList } from "@/components/FavouritesList";
 import { SectionMediaDetails } from "@/styles/MediaDetailsPage.styled";
-
-const MediaPageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const MediaPageSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const MediaPageContainer = styled.div`
-  width: 2000px;
-  color: #fff;
-  background-color: #0d0d2f;
-`;
-
-export const MediaPageTitle = styled.h2`
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: white;
-  display: flex;
-  gap: 10px;
-`;
-
- const MediaPageMenu = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 25px 20px;
-  background-color: #0d0d2f;
-  border-radius: 8px;
-`;
-
+import { MediaPageContainer, MediaPageMenu, MediaPageSection, MediaPageTitle, MediaPageWrapper } from "@/styles/MediaPage.styled";
+import { ErrorState, LoadingState } from "@/utils/renderStates";
 
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -103,12 +68,11 @@ const Movies = () => {
             </MediaPageMenu>
 
             {loading && (
-              <div style={{ padding: 20, display: "flex", gap: 12, alignItems: "center" }}>
-                Loading movies... <CircularProgress size={20} />
-              </div>
+               <LoadingState message="Loading Movies" />
+              
             )}
 
-            {error && <div style={{ padding: 20 }}>{error}</div>}
+            {error && <ErrorState message={error} />}
 
             {!loading && !error && (
               <>
@@ -134,3 +98,4 @@ const Movies = () => {
 };
 
 export default Movies;
+

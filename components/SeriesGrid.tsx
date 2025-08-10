@@ -14,6 +14,7 @@ import {
   MediaToggleButtonWrapper,
   MediaFavouriteIconWrapper,
 } from "@/styles/MediaGrid.styled";
+import { FavouritesButton } from "./FavouritesButton";
 
 
 type Series = {
@@ -32,7 +33,7 @@ type SeriesProps = {
 };
 
 export const SeriesGrid = ({ series,showToggle = true,
-  initialVisible = 5, }: SeriesProps) => {
+  initialVisible = 6, }: SeriesProps) => {
     const [showAll, setShowAll] = useState(false);
     
       const visibleSeries = showToggle
@@ -61,16 +62,16 @@ return (
             </Link>
 
             <MediaFavouriteIconWrapper>
-              {/* <FavouritesButton
+              <FavouritesButton
                 itemId={series.id.toString()}
                 type="series"
                 data={{
-                  title: series.title,
+                  title: series.name,
                   poster_path: series.poster_path,
-                  releaseDate: series.releaseDate,
+                  first_air_date: series.first_air_date,
                   vote_average: series.vote_average,
                 }}
-              /> */}
+              />
             </MediaFavouriteIconWrapper>
           </MediaPosterWrapper>
         </MediaCard>

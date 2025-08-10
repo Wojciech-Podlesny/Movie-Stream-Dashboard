@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const NavbarContainer = styled.div`
-  background-color: rgba(13, 13, 29, 0.8);
+  background-color: rgba(57, 57, 72, 0.8);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: space-between;
@@ -28,6 +28,7 @@ export const SearchWrapper = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
+  padding: 10px 0;
 
   @media (max-width: 768px) {
     display: none;

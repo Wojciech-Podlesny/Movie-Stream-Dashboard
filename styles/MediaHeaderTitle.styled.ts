@@ -11,7 +11,7 @@ export const SectionHeaderContainer = styled.h3`
   font-size: 1.6rem;
   font-weight: 600;
   color: white;
-  padding: 12px 16px;
+  padding: 16px;
   border-radius: 12px;
 `;
 

@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const MovieHeaderLayout = styled.div`
+export const MediaHeaderLayout = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -16,14 +16,14 @@ export const MovieHeaderLayout = styled.div`
   }
 `;
 
-export const MovieHeaderInfo = styled.div`
+export const MediaHeaderInfo = styled.div`
   max-width: 600px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
 
-export const MovieHeaderPosterWrapper = styled.div`
+export const MediaHeaderPosterWrapper = styled.div`
   flex-shrink: 0;
   padding-left: 40px;
   display: flex;
@@ -35,14 +35,14 @@ export const MovieHeaderPosterWrapper = styled.div`
   }
 `;
 
-export const MovieHeaderMetaData = styled.div`
+export const MediaHeaderMetaData = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: flex-start;
 `;
 
-export const MovieHeaderOverview = styled.div`
+export const MediaHeaderOverview = styled.div`
   margin-top: 32px;
   color: white;
   width: 100%;
@@ -57,7 +57,7 @@ export const MovieHeaderOverview = styled.div`
   }
 `;
 
-export const MovieHeaderTitleRow = styled.div`
+export const MediaHeaderTitleRow = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;

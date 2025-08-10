@@ -7,12 +7,21 @@ export const SearchBarWrapper = styled.div`
   margin: 0 auto;
 `;
 
+
+export const InputWrapper = styled.div`
+  position: relative;
+  height: 44px; 
+`;
+
 export const SearchInput = styled.input`
   width: 100%;
-  padding: 10px 40px 10px 15px;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 10px 44px 10px 15px;
   border: 1.5px solid #ccc;
   border-radius: 20px;
   font-size: 15px;
+  line-height: normal; 
   outline: none;
   background-color: #fff;
 
@@ -32,25 +41,40 @@ export const SearchIconContainer = styled.div`
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: #666;
+  color: #000;
+  display: flex;
+  align-items: center;
 `;
 
 export const SearchDropdown = styled.ul`
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px); 
   left: 0;
   right: 0;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0 0 12px 12px;
-  max-height: 300px;
+  background: #ffffff;
+  border: 1px solid #e3e3e3;
+  border-radius: 12px;
+  max-height: 320px;
   overflow-y: auto;
-  z-index: 10;
+  z-index: 20;
   margin: 0;
-  padding: 0;
+  padding: 4px 0;
   list-style: none;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  animation: fadeIn 0.15s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 `;
 
 export const SearchDropdownItem = styled.li`
@@ -58,12 +82,13 @@ export const SearchDropdownItem = styled.li`
   align-items: center;
   padding: 10px 14px;
   font-size: 15px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f5f5f5;
   cursor: pointer;
-  transition: background 0.25s ease;
+  transition: background 0.2s ease, transform 0.15s ease;
 
   &:hover {
-    background-color: #f0f8ff;
+    background-color: #f7fbff;
+    transform: translateX(2px);
   }
 
   &:last-child {
@@ -74,13 +99,15 @@ export const SearchDropdownItem = styled.li`
     width: 40px;
     height: 60px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 8px;
     margin-right: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
   span {
     font-weight: 500;
-    color: #333;
+    color: #2d2d2d;
+    line-height: 1.4;
   }
 `;
 

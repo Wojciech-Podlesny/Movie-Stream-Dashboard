@@ -1,17 +1,20 @@
-'use client'
-import { Footer } from "@/components/Footer";
+"use client";
+
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { RegisterForm } from "@/components/RegisterForm";
+import { FormContainer, PageMain, PageWrapper } from "@/styles/Layout.styled";
 
-
- const Register = () => {
+export default function Register() {
   return (
-    <>
+    <PageWrapper>
       <Navbar />
-      <RegisterForm />
+      <PageMain>
+        <FormContainer>
+          <RegisterForm />
+        </FormContainer>
+      </PageMain>
       <Footer />
-    </>
+    </PageWrapper>
   );
-};
-
-export default Register
+}

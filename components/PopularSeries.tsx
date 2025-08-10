@@ -1,69 +1,77 @@
-"use client";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/app/store/store";
-import { useEffect, useState } from "react";
-import { CircularProgress} from "@mui/material";
-import { getFilteredSeries, getSortedSeries } from "@/utils/filterSeries";
+'use client';
+
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../app/store/store";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { MediaFilterBar } from "./MediaFilterBar";
-import { SeriesGrid } from "./SeriesGrid";
 import { fetchHomeContentInitial } from "@/app/store/Media/homeContentSlice";
-import { styled } from "styled-components";
 import { MediaHeaderTitle } from "./MediaHeaderTitle";
-
-
-
-export const PopularMediaWrapper = styled.div`
-  width: 100%;
-  color: #fff;
-  background-color: #0d0d2f;
-  border-bottom: 1px solid white;
-
-  @media (max-width: 480px) {
-    padding: 0 6px;
-  }
-`;
-
+import { PopularMediaWrapper } from "@/styles/MediaPopularWrapper.styled";
+import { ErrorState, LoadingState } from "@/utils/renderStates";
+import FilterListAltIcon from '@mui/icons-material/FilterListAlt';
+import ClearIcon from '@mui/icons-material/Clear';
+import {MobileFilterToggle,HeaderWithFilter,} from "@/styles/MediaFilterBar.styled";
+import FiltersDrawer from "./MobileFilterDrawer";
+import { getFilteredSeries, getSortedSeries } from "@/utils/filterSeries";
+import { SeriesGrid } from "./SeriesGrid";
 
 export const PopularSeries = () => {
-  const { error, loading, popularSeries } = useSelector((state: RootState) => state.home);
-  const { selectedSeriesCategory } = useSelector((state: RootState) => state.categories);
+  const { error, loading, popularSeries } = useSelector((s: RootState) => s.home);
+  const { selectedMovieCategory } = useSelector((s: RootState) => s.categories);
+  const { query } = useSelector((s: RootState) => s.search);
   const dispatch = useDispatch<AppDispatch>();
-  const { query } = useSelector((state: RootState) => state.search);
-  const [showAllSeries, setShowAllSeries] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchHomeContentInitial());
   }, [dispatch]);
 
+  const filteredSeries = useMemo(
+    () => getFilteredSeries(popularSeries, selectedMovieCategory, query),
+    [popularSeries, selectedMovieCategory, query]
+  );
 
-    const filteredMSeriees = getFilteredSeries(popularSeries, selectedSeriesCategory, query);
-    const sortedSeries = getSortedSeries(filteredMSeriees, filter, sortDirection);
-  
-    if (loading)
-      return (
-        <PopularMediaWrapper>
-          {" "}
-          Loading series <CircularProgress />{" "}
-        </PopularMediaWrapper>
-      );
-  
-    if (error) return <PopularMediaWrapper>{error}</PopularMediaWrapper>;
+  const sortedSeries = useMemo(
+    () => getSortedSeries(filteredSeries, filter, sortDirection),
+    [filteredSeries, filter, sortDirection]
+  );
+
+  const toggleFilters = useCallback(() => setIsFiltersOpen(v => !v), []);
+  const closeFilters = useCallback(() => setIsFiltersOpen(false), []);
+
+  if (loading) return <LoadingState message="Loading series" />;
+  if (error) return <ErrorState message={error} />;
 
   return (
     <PopularMediaWrapper>
-       <MediaHeaderTitle type={"series"}  />
-    <MediaFilterBar
-           filter={filter}
-           sortDirection={sortDirection}
-           setFilter={setFilter}
-           setSortDirection={setSortDirection}
-           showAll={showAllSeries}
-           toggleShowAll={() => setShowAllSeries((prev) => !prev)}
-         />
+      <HeaderWithFilter>
+        <MediaHeaderTitle type="series" />
+        <MobileFilterToggle
+          aria-expanded={isFiltersOpen}
+          onClick={toggleFilters}
+        >
+          {isFiltersOpen ? <ClearIcon fontSize="medium" /> : <FilterListAltIcon fontSize="medium" />}
+        </MobileFilterToggle>
+      </HeaderWithFilter>
 
-     <SeriesGrid series={sortedSeries} />
+
+      <MediaFilterBar
+        sortDirection={sortDirection}
+        setFilter={setFilter}
+        setSortDirection={setSortDirection}
+      />
+
+      <FiltersDrawer
+        isOpen={isFiltersOpen}
+        onClose={closeFilters}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+        setFilter={setFilter}
+      />
+
+      <SeriesGrid series={sortedSeries} />
     </PopularMediaWrapper>
   );
 };
