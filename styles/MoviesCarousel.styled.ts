@@ -20,7 +20,7 @@ export const SlideWrapper = styled.div`
 
 export const MoviePoster = styled.img`
   width: 100%;
-  border-radius: 10px;
+  border-radius: 11px;
   transition: transform 0.3s;
   cursor: pointer;
 
