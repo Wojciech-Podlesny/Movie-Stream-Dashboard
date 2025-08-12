@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
+  apiKey: process.env.API_KEY_FIREBASE!,
+  authDomain: process.env.AUTH_DOMAIN_FIREBASE!,
+  projectId: process.env.PROJECT_ID_FIREBASE!,
+  storageBucket: process.env.STORAGE_BUCKET_FIREBASE!,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID_FIREBASE!,
+  appId: process.env.APP_ID_FIREBASE!,
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
@@ -16,6 +16,3 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export { app };
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-
-
-
