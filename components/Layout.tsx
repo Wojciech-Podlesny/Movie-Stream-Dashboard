@@ -9,6 +9,8 @@ import { PopularSeries } from "./PopularSeries";
 import { SearchBar } from "./SearchBar";
 import { FavouritesList } from "./FavouritesList";
 import { styled } from "styled-components";
+// import { NowPlayingMovies } from "./NowPlayingMovies";
+// import { UpcomingMovies } from "./UpcomingMovies";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -110,8 +112,10 @@ export const Layout = () => {
           <SectionHeader>
             <SearchBar />
           </SectionHeader>
+          {/* <NowPlayingMovies /> */}
           <PopularMovies />
           <PopularSeries />
+          {/* <UpcomingMovies /> */}
         </ContentArea>
         <RightSidebar>
           <FavouritesList />

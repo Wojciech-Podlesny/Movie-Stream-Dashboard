@@ -1,68 +1,128 @@
-import { setSelectedSeriesCateogory, setSelectedMovieCategory, clearSelectedMovieCategory, clearSelectedSeriesCategory, clearSelectedCategories } from "@/app/store/Media/categoriesSlice";
-import { CategorySectionHeader, CategorySectionTitle, CategoryDropdownIcon, CategoryListWrapper, CategoryListItem } from "@/styles/CategoriesSection.styled";
+import {
+  setSelectedSeriesCategory,
+  setSelectedMovieCategory,
+  clearSelectedMovieCategory,
+  clearSelectedSeriesCategory,
+} from "@/app/store/Media/categoriesSlice";
+import {
+  CategorySectionHeader,
+  CategorySectionTitle,
+  CategoryDropdownIcon,
+  CategoryListWrapper,
+  CategoryListItem,
+} from "@/styles/CategoriesSection.styled";
 import { Genre, PropsCategory } from "@/types";
 import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { useCallback } from "react";
 
 interface CategoriesSectionProps extends PropsCategory {
   type: "movie" | "series";
 }
 
-export const CategoriesSection = ({ title, icon: Icon, categories, isOpen, setIsOpen, type }: CategoriesSectionProps) => {
+export const CategoriesSection = ({
+  title,
+  icon: Icon,
+  categories,
+  isOpen,
+  setIsOpen,
+  type,
+}: CategoriesSectionProps) => {
   const dispatch = useDispatch();
 
-  const handleClickCategories = (genre: Genre) => {
-    if (type === "movie") {
-      dispatch(setSelectedMovieCategory(genre))
-    } else {
-      dispatch(setSelectedSeriesCateogory(genre))
-    }
-  }
+  const selected = useSelector((s: RootState) =>
+    type === "movie"
+      ? s.categories.selectedMovieCategory
+      : s.categories.selectedSeriesCategory
+  );
 
-  const handleClickClearCategories = () => {
-    dispatch(clearSelectedCategories());
-    if (type === "movie") {
-      dispatch(clearSelectedMovieCategory());
-    } else {
-      dispatch(clearSelectedSeriesCategory());
-    }
-  }
+  const handleClickCategories = useCallback(
+    (genre: Genre | null) => {
+      if (type === "movie") {
+        if (genre) {
+          dispatch(setSelectedMovieCategory(genre));
+        } else {
+          dispatch(clearSelectedMovieCategory());
+        }
+      } else {
+        if (genre) {
+          dispatch(setSelectedSeriesCategory(genre));
+        } else {
+          dispatch(clearSelectedSeriesCategory());
+        }
+      }
+    },
+    [dispatch, type]
+  );
+
+  const handleClearCategories = useCallback(() => handleClickCategories(null), [handleClickCategories]);
 
   return (
     <>
-      <CategorySectionHeader
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-      >
+      <CategorySectionHeader onClick={() => setIsOpen(!isOpen)}>
         <CategorySectionTitle>
           <Icon size={40} />
-          <p>{title}</p>
+          <p>
+            {title}
+            {selected ? (
+              <span style={{ marginLeft: 8, opacity: 0.8 }}>· {selected.name}</span>
+            ) : null}
+          </p>
         </CategorySectionTitle>
         <CategoryDropdownIcon isOpen={isOpen} />
       </CategorySectionHeader>
-      <CategoryListWrapper isVisible={isOpen}>
-        {categories.map((genre) => (
-          <CategoryListItem
-            key={genre.id}
-            onClick={() => handleClickCategories(genre)}
-          >
-            {genre.name}
-          </CategoryListItem>
-        ))}
+
+      <CategoryListWrapper isVisible={isOpen} role="listbox">
+        <CategoryListItem
+          role="option"
+          aria-selected={!selected}
+          onClick={() => handleClickCategories(null)}
+          style={{
+            fontWeight: !selected ? 700 : 500,
+            background: !selected ? "rgba(255,255,255,0.08)" : "transparent",
+            borderRadius: 8,
+          }}
+        >
+          All
+        </CategoryListItem>
+
+        {categories.map((genre) => {
+          const isActive = selected?.id === genre.id;
+          return (
+            <CategoryListItem
+              key={genre.id}
+              role="option"
+              aria-selected={isActive}
+              onClick={() => handleClickCategories(genre)}
+              style={{
+                fontWeight: isActive ? 700 : 500,
+                background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+                borderRadius: 8,
+              }}
+            >
+              {genre.name}
+            </CategoryListItem>
+          );
+        })}
+
         <Button
           variant="outlined"
-          onClick={handleClickClearCategories}
+          onClick={handleClearCategories}
           color="inherit"
+          disabled={!selected}
           sx={{
             mt: 1.5,
             borderColor: "#fff",
             color: "#fff",
             fontWeight: 500,
             alignSelf: "flex-start",
+            opacity: selected ? 1 : 0.5,
             "&:hover": {
-              borderColor: "#aaa",
-              backgroundColor: "rgba(255,255,255,0.08)",
+              borderColor: selected ? "#aaa" : "#fff",
+              backgroundColor: selected
+                ? "rgba(255,255,255,0.08)"
+                : "transparent",
             },
           }}
         >

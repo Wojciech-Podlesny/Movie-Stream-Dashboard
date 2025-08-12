@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { RegisterForm } from "@/components/RegisterForm";
 import { FormContainer, PageMain, PageWrapper } from "@/styles/Layout.styled";
 
-export default function Register() {
+const Register = () => {
   return (
     <PageWrapper>
       <Navbar />
@@ -18,3 +18,5 @@ export default function Register() {
     </PageWrapper>
   );
 }
+
+export default Register;

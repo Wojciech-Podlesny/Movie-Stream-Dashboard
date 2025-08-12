@@ -15,3 +15,4 @@ export function getAdminApp(): App {
     credential: cert(serviceAccount),
   });
 }
+

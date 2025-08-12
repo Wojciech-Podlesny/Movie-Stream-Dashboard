@@ -21,7 +21,8 @@ export const CommentForm = ({ itemId, type }: CommentSectionProps) => {
         const res = await fetch(`/api/account/comments?itemId=${itemId}&type=${type}`);
         const data = await res.json();
         if (res.ok) {
-          const formatted = data.map((c) => ({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const formatted = data.map((c:any) => ({
             id: c.id,
             username: c.username,
             text: c.text,

@@ -17,7 +17,7 @@ import { SeriesGrid } from "./SeriesGrid";
 
 export const PopularSeries = () => {
   const { error, loading, popularSeries } = useSelector((s: RootState) => s.home);
-  const { selectedMovieCategory } = useSelector((s: RootState) => s.categories);
+  const { selectedSeriesCategory} = useSelector((s: RootState) => s.categories);
   const { query } = useSelector((s: RootState) => s.search);
   const dispatch = useDispatch<AppDispatch>();
   const [filter, setFilter] = useState<string>("");
@@ -29,8 +29,8 @@ export const PopularSeries = () => {
   }, [dispatch]);
 
   const filteredSeries = useMemo(
-    () => getFilteredSeries(popularSeries, selectedMovieCategory, query),
-    [popularSeries, selectedMovieCategory, query]
+    () => getFilteredSeries(popularSeries, selectedSeriesCategory, query),
+    [popularSeries, selectedSeriesCategory, query]
   );
 
   const sortedSeries = useMemo(

@@ -69,7 +69,7 @@ export const categoriesSlice = createSlice({
       state.selectedMovieCategory = action.payload;
     },
 
-    setSelectedSeriesCateogory: (state, action) => {
+    setSelectedSeriesCategory: (state, action) => {
       state.selectedSeriesCategory = action.payload;
     },
 
@@ -105,7 +105,7 @@ export const categoriesSlice = createSlice({
 
 export const {
   setSelectedMovieCategory,
-  setSelectedSeriesCateogory,
+  setSelectedSeriesCategory,
   clearSelectedCategories,
   clearSelectedMovieCategory,
   clearSelectedSeriesCategory

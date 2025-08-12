@@ -2,16 +2,21 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { AccountForm } from '@/components/AccountForm';
+import { FormContainer, PageMain, PageWrapper } from '@/styles/Layout.styled';
 
 
-const AccountPage = () => {
+const Account = () => {
   return (
-    <>
-      <Navbar />
-      <AccountForm />
-      <Footer />
-    </>
+     <PageWrapper>
+         <Navbar />
+         <PageMain>
+           <FormContainer>
+             <AccountForm />
+           </FormContainer>
+         </PageMain>
+         <Footer />
+       </PageWrapper>
   );
 };
 
-export default AccountPage;
+export default Account;

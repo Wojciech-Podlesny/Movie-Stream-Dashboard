@@ -5,7 +5,7 @@ import { LoginForm } from "@/components/LoginForm";
 import { Footer } from "@/components/Footer";
 import { FormContainer, PageMain, PageWrapper } from "@/styles/Layout.styled";
 
-export default function Login() {
+const Login = () => {
   return (
     <PageWrapper>
       <Navbar />
@@ -18,3 +18,5 @@ export default function Login() {
     </PageWrapper>
   );
 }
+
+export default Login;
