@@ -14,10 +14,9 @@ export const fetchMoviesDetails = createAsyncThunk<
 >(
   "details/fetchMoviesDetails",
   async ({ movieId }, { rejectWithValue }) => {
-    const URL = process.env.NEXT_PUBLIC_TMDB_API_URL;
 
     try {
-      const response = await axios.get(`${URL}/movie/${movieId}`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/movie/${movieId}`, {
         params: {
           api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,   
         },

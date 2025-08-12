@@ -16,11 +16,9 @@ export const fetchTrailer = createAsyncThunk<
 >(
   "trailer/fetchTrailer",
   async (movieTitle, { rejectWithValue }) => {
-    const URL = process.env.NEXT_PUBLIC_TMDB_API_URL;
-
     try {
       const [movieSearchResponse, seriesSearchResponse] = await Promise.all([
-        axios.get<SearchResponse>(`${URL}/search/movie`, {
+        axios.get<SearchResponse>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/search/movie`, {
           params: {
             api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
             query: movieTitle,

@@ -32,17 +32,15 @@ export const fetchCategories = createAsyncThunk<
   void,
   { rejectValue: FetchCategoriesReject }
 >("categories/fetchCategories", async (_, { rejectWithValue }) => {
-  const URL = process.env.NEXT_PUBLIC_TMDB_API_URL;
-
   try {
     const [responseCategoriesMovies, responseCategoriesSeries] =
       await Promise.all([
-        axios.get<GenresResponse>(`${URL}/genre/movie/list`, {
+        axios.get<GenresResponse>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/genre/movie/list`, {
           params: {
             api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
           },
         }),
-        axios.get<GenresResponse>(`${URL}/genre/tv/list`, {
+        axios.get<GenresResponse>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/genre/tv/list`, {
           params: {
             api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
           },

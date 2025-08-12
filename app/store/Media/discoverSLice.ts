@@ -34,8 +34,7 @@ export const fetchDiscoverMovies = createAsyncThunk<
   "discover/fetchDiscoverMovies",
   async (page, { rejectWithValue }) => {
     try {
-      const URL = process.env.NEXT_PUBLIC_TMDB_API_URL;
-      const response = await axios.get<PaginatedResponse<Movie>>(`${URL}/discover/movie`, {
+      const response = await axios.get<PaginatedResponse<Movie>>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/discover/movie`, {
         params: {
           api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
           page,
@@ -63,8 +62,7 @@ export const fetchDiscoverSeries = createAsyncThunk<
   "discover/fetchDiscoverSeries",
   async (page, { rejectWithValue }) => {
     try {
-      const URL = process.env.NEXT_PUBLIC_TMDB_API_URL;
-      const response = await axios.get<PaginatedResponse<Series>>(`${URL}/discover/tv`, {
+      const response = await axios.get<PaginatedResponse<Series>>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/discover/tv`, {
         params: {
           api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
           page,
