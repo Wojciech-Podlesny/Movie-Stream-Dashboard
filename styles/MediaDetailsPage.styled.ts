@@ -12,7 +12,7 @@ export const SectionMain = styled.div`
 `;
 
 export const TrailerContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 41px;
 `;
 
 export const MediaWrapper = styled.div`
