@@ -25,22 +25,15 @@ const handler = NextAuth({
           }
 
 
-          // const res = await fetch(
-          //   `${process.env.NEXT_AUTH_URL}/api/auth/login`,
-          //   {
-          //     method: "POST",
-          //     headers: { "Content-Type": "application/json" },
-          //     body: JSON.stringify(credentials),
-          //   }
-          // );
           const res = await fetch(
-            "/api/auth/login",
+            `${process.env.NEXT_AUTH_URL}/api/auth/login`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(credentials),
             }
           );
+         
 
           const user = await res.json();
 

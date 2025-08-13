@@ -21,7 +21,7 @@ export const ToggleShowAllButton = styled(Button)`
 
     @media (max-width: 480px) {
       width: 100%;
-      font-size: 1rem;
+      font-size: 1,1rem;
       padding: 10px 20px;
     }
   }
