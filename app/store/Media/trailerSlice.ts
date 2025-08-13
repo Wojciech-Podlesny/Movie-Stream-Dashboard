@@ -24,7 +24,7 @@ export const fetchTrailer = createAsyncThunk<
             query: movieTitle,
           },
         }),
-        axios.get<SearchResponse>(`${URL}/search/tv`, {
+        axios.get<SearchResponse>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/search/tv`, {
           params: {
             api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
             query: movieTitle,
@@ -49,7 +49,7 @@ export const fetchTrailer = createAsyncThunk<
       }
 
       const videoResponse = await axios.get<VideosResponse>(
-        `${URL}/${selectedType}/${selectedId}/videos`,
+        `${process.env.NEXT_PUBLIC_TMDB_API_URL}/${selectedType}/${selectedId}/videos`,
         {
           params: {
             api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,

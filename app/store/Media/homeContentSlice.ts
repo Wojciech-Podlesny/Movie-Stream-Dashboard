@@ -30,28 +30,26 @@ export const fetchHomeContentInitial = createAsyncThunk<
   { rejectValue: string }
 >("home/fetchHomeContent", async (_, { rejectWithValue }) => {
   try {
-    const URL = process.env.NEXT_PUBLIC_TMDB_API_URL;
-    const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-
+    
     const [resPopularMovies, resPopularSeries, resUpcoming, resNowPlaying] = await Promise.all([
-      axios.get<PaginatedResponse<Movie>>(`${URL}/movie/popular`, {
+      axios.get<PaginatedResponse<Movie>>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/movie/popular`, {
         params: { 
-          api_key: API_KEY, 
+          api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY, 
           language: "en-EN" },
       }),
-      axios.get<PaginatedResponse<Series>>(`${URL}/tv/popular`, {
+      axios.get<PaginatedResponse<Series>>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/tv/popular`, {
         params: { 
-          api_key:  API_KEY, 
+          api_key:  process.env.NEXT_PUBLIC_TMDB_API_KEY, 
           language: "en-EN" },
       }),
-      axios.get<PaginatedResponse<Movie>>(`${URL}/movie/upcoming`, {
+      axios.get<PaginatedResponse<Movie>>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/movie/upcoming`, {
         params: { 
-          api_key: API_KEY, 
+          api_key:  process.env.NEXT_PUBLIC_TMDB_API_KEY, 
           language: "en-EN" },
       }),
-      axios.get<PaginatedResponse<Movie>>(`${URL}/movie/now_playing`, {
+      axios.get<PaginatedResponse<Movie>>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/movie/now_playing`, {
         params: { 
-          api_key: API_KEY, 
+           api_key:  process.env.NEXT_PUBLIC_TMDB_API_KEY, 
           language: "en-EN" },
       }),
     ]);
