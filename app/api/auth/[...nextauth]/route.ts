@@ -16,17 +16,25 @@ const handler = NextAuth({
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      
+
       async authorize(credentials) {
         try {
 
-        if (!credentials?.email || !credentials?.password) {
-        throw new Error("Email and password are required.");
-        }
+          if (!credentials?.email || !credentials?.password) {
+            throw new Error("Email and password are required.");
+          }
 
 
+          // const res = await fetch(
+          //   `${process.env.NEXT_AUTH_URL}/api/auth/login`,
+          //   {
+          //     method: "POST",
+          //     headers: { "Content-Type": "application/json" },
+          //     body: JSON.stringify(credentials),
+          //   }
+          // );
           const res = await fetch(
-            `${process.env.NEXT_AUTH_URL}/api/auth/login`,
+            "/api/auth/login",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -38,16 +46,16 @@ const handler = NextAuth({
 
           if (!res.ok) throw new Error(user.error);
 
-          if(!user.emailVerified) {
+          if (!user.emailVerified) {
             throw new Error("Email not verified");
           }
- 
+
           return {
             id: user.id,
             email: user.email,
             name: user.name,
             image: user.image,
-            idToken: user.idToken 
+            idToken: user.idToken
           };
         } catch (error) {
           console.error("NextAuth authorize error:", error);
@@ -58,7 +66,7 @@ const handler = NextAuth({
   ],
 
   adapter: FirestoreAdapter({
-    credential: getAdminApp().options.credential!, 
+    credential: getAdminApp().options.credential!,
   }),
 
   session: {
@@ -69,14 +77,14 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-              token.idToken = user.idToken;
+        token.idToken = user.idToken;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
-          session.user.idToken = token.idToken as string; 
+        session.user.idToken = token.idToken as string;
       }
       return session;
     },
@@ -84,7 +92,7 @@ const handler = NextAuth({
 
   pages: {
     error: "/auth/error",
-    signIn:"/login"
+    signIn: "/login"
   },
 
   secret: process.env.NEXT_AUTH_SECRET,

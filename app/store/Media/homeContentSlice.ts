@@ -35,16 +35,24 @@ export const fetchHomeContentInitial = createAsyncThunk<
 
     const [resPopularMovies, resPopularSeries, resUpcoming, resNowPlaying] = await Promise.all([
       axios.get<PaginatedResponse<Movie>>(`${URL}/movie/popular`, {
-        params: { api_key: API_KEY, language: "en-EN" },
+        params: { 
+          api_key: API_KEY, 
+          language: "en-EN" },
       }),
       axios.get<PaginatedResponse<Series>>(`${URL}/tv/popular`, {
-        params: { api_key: API_KEY, language: "en-EN" },
+        params: { 
+          api_key:  API_KEY, 
+          language: "en-EN" },
       }),
       axios.get<PaginatedResponse<Movie>>(`${URL}/movie/upcoming`, {
-        params: { api_key: API_KEY, language: "en-EN" },
+        params: { 
+          api_key: API_KEY, 
+          language: "en-EN" },
       }),
       axios.get<PaginatedResponse<Movie>>(`${URL}/movie/now_playing`, {
-        params: { api_key: API_KEY, language: "en-EN" },
+        params: { 
+          api_key: API_KEY, 
+          language: "en-EN" },
       }),
     ]);
 

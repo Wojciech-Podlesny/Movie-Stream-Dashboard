@@ -34,7 +34,7 @@ export const fetchDiscoverMovies = createAsyncThunk<
   "discover/fetchDiscoverMovies",
   async (page, { rejectWithValue }) => {
     try {
-      const response = await axios.get<PaginatedResponse<Movie>>(`${process.env.NEXT_PUBLIC_TMDB_API_URL}/discover/movie`, {
+      const response = await axios.get<PaginatedResponse<Movie>>(`${process.env.TMDB_API_URL}/discover/movie`, {
         params: {
           api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
           page,
