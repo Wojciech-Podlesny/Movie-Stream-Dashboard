@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Footer } from "./Footer";
+import { styled } from "styled-components";
+
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
+import { SearchBar } from "./SearchBar";
 import { PopularMovies } from "./PopularMovies";
 import { PopularSeries } from "./PopularSeries";
-import { SearchBar } from "./SearchBar";
 import { FavouritesList } from "./FavouritesList";
-import { styled } from "styled-components";
-// import { NowPlayingMovies } from "./NowPlayingMovies";
-// import { UpcomingMovies } from "./UpcomingMovies";
+import { Footer } from "./Footer";
+import { NowPlayingMovies } from "./NowPlayingMovies";
+import { UpcomingMovies } from "./UpcomingMovies";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -22,7 +23,6 @@ const MainGrid = styled.div<{ leftCol: number }>`
   display: grid;
   grid-template-columns: ${({ leftCol }) => `${leftCol}px minmax(0, 1fr) 250px`};
   grid-template-areas: "left content right";
-
   flex: 1;
   min-height: 100vh;
   transition: grid-template-columns 0.3s ease;
@@ -69,15 +69,13 @@ const RightSidebar = styled.aside`
 const ContentArea = styled.main`
   grid-area: content;
   min-height: 100vh;
-  min-width: 0;          
+  min-width: 0;
   width: 100%;
-  max-width: 1200px;     
-  margin: 0 auto;        
+  max-width: 1200px;
+  margin: 0 auto;
   box-sizing: border-box;
 
-  @media (max-width: 480px) {
-    padding: 0 12px;
-  }
+ 
 `;
 
 const SectionHeader = styled.section`
@@ -90,7 +88,17 @@ const SectionHeader = styled.section`
   box-sizing: border-box;
 
   @media (min-width: 768px) {
-    display: none;
+    display: none; 
+  }
+`;
+
+
+const MobileSidebar = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    margin: 8px 0 16px;
   }
 `;
 
@@ -101,6 +109,7 @@ export const Layout = () => {
   return (
     <PageWrapper>
       <Navbar />
+
       <MainGrid leftCol={leftWidth}>
         <LeftSidebar widthPx={leftWidth}>
           <Sidebar
@@ -108,19 +117,30 @@ export const Layout = () => {
             onToggle={() => setIsSidebarOpen((v) => !v)}
           />
         </LeftSidebar>
+
         <ContentArea>
           <SectionHeader>
             <SearchBar />
           </SectionHeader>
-          {/* <NowPlayingMovies /> */}
+
+          <MobileSidebar>
+            <Sidebar
+              isOpen={isSidebarOpen}
+              onToggle={() => setIsSidebarOpen((v) => !v)}
+            />
+          </MobileSidebar>
+          <NowPlayingMovies />
           <PopularMovies />
           <PopularSeries />
-          {/* <UpcomingMovies /> */}
+          <UpcomingMovies />
         </ContentArea>
+
+  
         <RightSidebar>
           <FavouritesList />
         </RightSidebar>
       </MainGrid>
+
       <Footer />
     </PageWrapper>
   );

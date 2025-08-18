@@ -1,42 +1,42 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
-import { MoviesPagination } from "@/components/MediaPagination";
 import { fetchDiscoverSeries } from "../store/Media/discoverSLice";
-import { MediaFilterButtons } from "@/components/MediaFilterButtons";
-import { getFilteredSeries, getSortedSeries } from "@/utils/filterSeries";
-import { SeriesGrid } from "@/components/SeriesGrid";
-import { SectionMediaDetails } from "@/styles/MediaDetailsPage.styled";
 import { Sidebar } from "@/components/Sidebar";
 import { FavouritesList } from "@/components/FavouritesList";
-import { MediaPageContainer, MediaPageMenu, MediaPageSection, MediaPageTitle, MediaPageWrapper } from "@/styles/MediaPage.styled";
-import { ErrorState, LoadingState } from "@/utils/renderStates";
+import { MediaFilterBar } from "@/components/MediaFilterBar";
+import { MediaHeaderTitle } from "@/components/MediaHeaderTitle";
+import FiltersDrawer from "@/components/MobileFilterDrawer";
+import ClearIcon from "@mui/icons-material/Clear";
+import FilterListAltIcon from "@mui/icons-material/FilterListAlt";
+import { MediaPagination } from "@/components/MediaPagination";
+import { getFilteredSeries, getSortedSeries } from "@/utils/filterSeries";
+import { SeriesGrid } from "@/components/SeriesGrid";
+import { DesktopSectionFavouritesList, HeaderWithFilter, MediaWrapper, MobileOnlyToggle, SectionMain, SectionMedia, SectionMediaDetails } from "@/styles/MediaPage.styled";
+
 
 const Series = () => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const {
-    discoverSeries,
-    loading,
-    error,
-    seriesPage,
-    totalPagesSeries,
-  } = useSelector((state: RootState) => state.discover);
-
+  const { discoverSeries, seriesPage, totalPagesSeries } = useSelector((s: RootState) => s.discover);
   const { query } = useSelector((state: RootState) => state.search);
   const [filter, setFilter] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  const toggleFilters = useCallback(() => setIsFiltersOpen(v => !v), []);
+  const closeFilters = useCallback(() => setIsFiltersOpen(false), []);
 
   useEffect(() => {
     if (discoverSeries.length === 0) {
       dispatch(fetchDiscoverSeries(seriesPage));
     }
   }, [dispatch, discoverSeries.length, seriesPage]);
+
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     dispatch(fetchDiscoverSeries(value));
@@ -46,51 +46,65 @@ const Series = () => {
   const sortedSeries = getSortedSeries(filteredSeries, filter, sortDirection);
   const safeTotalPages = Math.min(totalPagesSeries, 500);
 
+
+
   return (
     <>
       <Navbar />
       <SectionMediaDetails leftCol={sidebarOpen ? 250 : 60}>
-        <Sidebar
-          isOpen={sidebarOpen}
-          onToggle={() => setSidebarOpen((prev) => !prev)}
-        />
-        <MediaPageWrapper>
-          <MediaPageSection>
-            <MediaPageContainer>
-              <MediaPageMenu>
-                <MediaPageTitle>Series</MediaPageTitle>
-                <MediaFilterButtons
-                  sortDirection={sortDirection}
-                  setFilter={setFilter}
-                  setSortDirection={setSortDirection}
-                />
-              </MediaPageMenu>
+        <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(p => !p)} />
+        <SectionMedia>
+          <SectionMain>
+            <MediaWrapper>
+              <HeaderWithFilter>
+                <MediaHeaderTitle type="movies" />
+                <MobileOnlyToggle
+                  aria-label="Pokaż filtry"
+                  aria-haspopup="dialog"
+                  aria-expanded={isFiltersOpen}
+                  onClick={toggleFilters}
+                >
+                  {isFiltersOpen ? (
+                    <ClearIcon fontSize="medium" />
+                  ) : (
+                    <FilterListAltIcon fontSize="medium" />
+                  )}
+                </MobileOnlyToggle>
+              </HeaderWithFilter>
 
-              {loading && (
-                <LoadingState message="Loading Series" />
-              )}
+              <MediaFilterBar
+                sortDirection={sortDirection}
+                setFilter={setFilter}
+                setSortDirection={setSortDirection}
+              />
 
-              {error && <ErrorState message={error} />}
 
-              {!loading && !error && (
-                <>
-                  <SeriesGrid series={sortedSeries} showToggle={false} />
-                  <MoviesPagination
-                    totalPages={safeTotalPages}
-                    page={seriesPage}
-                    onPageChange={handlePageChange}
-                  />
-                </>
-              )}
-            </MediaPageContainer>
-          </MediaPageSection>
-        </MediaPageWrapper>
-        <FavouritesList />
+              <SeriesGrid series={sortedSeries} showToggle={false} />
+
+              <MediaPagination
+                totalPages={safeTotalPages}
+                page={seriesPage}
+                onPageChange={handlePageChange}
+              />
+
+
+              <FiltersDrawer
+                isOpen={isFiltersOpen}
+                onClose={closeFilters}
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+                setFilter={setFilter}
+              />
+            </MediaWrapper>
+          </SectionMain>
+        </SectionMedia>
+        <DesktopSectionFavouritesList>
+          <FavouritesList />
+        </DesktopSectionFavouritesList>
       </SectionMediaDetails>
       <Footer />
     </>
-  )
-
-
+  );
 };
+
 export default Series;

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { MoviesTrailer } from "@/components/MediaTrailer";
+import { MediaTrailer } from "@/components/MediaTrailer";
 import {
   fetchMoviesDetails,
   resetMoviesDetails,
@@ -16,12 +16,16 @@ import { CommentForm } from "@/components/CommentForm";
 import { MoviesDetailsSection } from "@/components/MoviesDetailsSection";
 import { Sidebar } from "@/components/Sidebar";
 import { FavouritesList } from "@/components/FavouritesList";
-import { MediaWrapper, SectionMain, SectionMedia, SectionMediaDetails, TrailerContainer } from "@/styles/MediaDetailsPage.styled";
+import { DesktopSectionFavouritesList, MediaWrapper, SectionMain, SectionMedia, SectionMediaDetails, TrailerContainer } from "@/styles/MediaDetailsPage.styled";
+
+
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
-  const { movie, loading, error } = useSelector((state: RootState) => state.moviesDetails);
+  const { movie, loading, error } = useSelector(
+    (state: RootState) => state.moviesDetails
+  );
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
@@ -33,9 +37,9 @@ const MovieDetails = () => {
     };
   }, [dispatch, id]);
 
-  if (loading) return <LoadingState message="Loading" />
-  if (error || !movie) return <ErrorState message={error} />
-  
+  if (loading) return <LoadingState message="Loading" />;
+  if (error || !movie) return <ErrorState message={error} />;
+
   return (
     <>
       <Navbar />
@@ -44,6 +48,7 @@ const MovieDetails = () => {
           isOpen={sidebarOpen}
           onToggle={() => setSidebarOpen((prev) => !prev)}
         />
+
         <SectionMedia>
           <SectionMain>
             <MediaWrapper>
@@ -55,14 +60,19 @@ const MovieDetails = () => {
                 overview={movie.overview}
                 id={movie.id}
               />
+
               <TrailerContainer>
-                <MoviesTrailer movieTitle={movie.title} />
+                <MediaTrailer movieTitle={movie.title} />
               </TrailerContainer>
+
               <CommentForm itemId={id} type="movie" />
             </MediaWrapper>
           </SectionMain>
         </SectionMedia>
-        <FavouritesList />
+
+        <DesktopSectionFavouritesList>
+          <FavouritesList />
+        </DesktopSectionFavouritesList>
       </SectionMediaDetails>
       <Footer />
     </>

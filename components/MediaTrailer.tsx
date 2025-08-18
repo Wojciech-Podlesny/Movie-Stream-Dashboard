@@ -15,7 +15,7 @@ type MovieTrailerProps = {
   movieTitle: string;
 };
 
-export const MoviesTrailer = ({ movieTitle }: MovieTrailerProps) => {
+export const MediaTrailer = ({ movieTitle }: MovieTrailerProps) => {
   const dispatch = useAppDispatch();
   const { videoKey, loading, error } = useAppSelector((state) => state.trailer);
 

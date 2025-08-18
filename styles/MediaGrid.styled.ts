@@ -8,7 +8,7 @@ export const MediaGridWrapper = styled.div`
   justify-content: center;
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     padding: 16px;
   }

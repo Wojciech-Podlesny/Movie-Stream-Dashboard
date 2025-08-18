@@ -5,6 +5,8 @@ export const OuterWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+
+
 `;
 
 export const InnerCarouselWrapper = styled.div`
@@ -26,5 +28,8 @@ export const MoviePoster = styled.img`
 
   &:hover {
     transform: scale(1.05);
+  }
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `;

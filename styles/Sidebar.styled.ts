@@ -10,9 +10,11 @@ export const CategoriesContainer = styled.div`
   gap: 24px;
 
   @media (max-width: 768px) {
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
-    top: 60px;
+    max-width: none;
+    padding: 8px 12px;
+    gap: 12px;
   }
 `;
 
@@ -25,6 +27,15 @@ export const SidebarInner = styled.div`
   align-items: start;
   padding: 20px;
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    min-height: auto;
+    background: transparent;
+    padding: 0;
+    overflow: visible;
+    align-items: stretch;
+    gap: 8px;
+  }
 `;
 
 export const ToggleButton = styled.button`
@@ -41,5 +52,10 @@ export const ToggleButton = styled.button`
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+    align-self: flex-start; 
   }
 `;

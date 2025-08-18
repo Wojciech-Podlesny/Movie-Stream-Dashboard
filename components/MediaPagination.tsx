@@ -7,7 +7,7 @@ type MediaPaginationProps = {
   onPageChange: (event: ChangeEvent<unknown>, value: number) => void;
 };
 
-export const MoviesPagination = ({ totalPages, page, onPageChange }: MediaPaginationProps) => (
+export const MediaPagination = ({ totalPages, page, onPageChange }: MediaPaginationProps) => (
   <Box display="flex" justifyContent="center" marginTop={4} marginBottom={4}>
     <Pagination
       count={totalPages}
